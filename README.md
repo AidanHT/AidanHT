@@ -46,10 +46,10 @@ I build ML‑powered products, reliable cloud infrastructure, and delightful UIs
 ---
 
 <p align="center">
-  <img src="docs/assets/galaxia.svg" width="820" alt="Galaxia Commit Grid — Retro Arcade" />
+  <img src="docs/assets/galaxia.svg" width="820" alt="Galaxia — Aidan Tran commit arcade (last 365 days)" />
   <br />
-  <em>Retro arcade x GitHub commit graph — inline SVG, no JS</em>
- </p>
+  <em>Retro arcade × GitHub commit graph — generated daily, no JS</em>
+  </p>
 
 ### By the numbers
 
