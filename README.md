@@ -46,9 +46,9 @@ I build ML‑powered products, reliable cloud infrastructure, and delightful UIs
 ---
 
 <p align="center">
-  <img src="docs/assets/retro.svg" width="720" alt="Retro Tech Animation" />
+  <img src="docs/assets/galaxia.svg" width="820" alt="Galaxia Commit Grid — Retro Arcade" />
   <br />
-  <em>Built with pure SVG — a nod to retro games and low‑level graphics</em>
+  <em>Retro arcade x GitHub commit graph — inline SVG, no JS</em>
  </p>
 
 ### By the numbers
@@ -74,8 +74,6 @@ I build ML‑powered products, reliable cloud infrastructure, and delightful UIs
 <p align="center">
   <img src="docs/assets/radar.svg" width="560" alt="Skills Radar" />
 </p>
-
----
 
 ---
 
