@@ -15,8 +15,12 @@ if not TOKEN:
 url = "https://api.github.com/graphql"
 headers = {"Authorization": f"bearer {TOKEN}", "Content-Type": "application/json"}
 
-end_date = dt.date.today()
-start_date = end_date - dt.timedelta(days=DAYS)
+utc = dt.timezone.utc
+today = dt.datetime.now(tz=utc).date()
+# Use full DateTime range to satisfy GraphQL DateTime type
+start_date = today - dt.timedelta(days=DAYS)
+start_dt = dt.datetime.combine(start_date, dt.time.min, tzinfo=utc)
+end_dt = dt.datetime.combine(today, dt.time.max.replace(microsecond=0), tzinfo=utc)
 
 query = textwrap.dedent(
     """
@@ -35,10 +39,13 @@ query = textwrap.dedent(
     """
 )
 
+def iso_z(d: dt.datetime) -> str:
+    return d.astimezone(utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
 variables = {
     "login": LOGIN,
-    "from": start_date.isoformat(),
-    "to": end_date.isoformat(),
+    "from": iso_z(start_dt),
+    "to": iso_z(end_dt),
 }
 
 resp = requests.post(url, headers=headers, json={"query": query, "variables": variables})
