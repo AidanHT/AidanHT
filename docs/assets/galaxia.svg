@@ -19,6 +19,12 @@
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
+    <!-- bullet paths from ship nose (460,182) to target centers -->
+    <path id="p1" d="M460 182 L237 95"/>
+    <path id="p2" d="M460 182 L273 131"/>
+    <path id="p3" d="M460 182 L309 77"/>
+    <path id="p4" d="M460 182 L345 149"/>
+    <path id="p5" d="M460 182 L381 113"/>
   </defs>
 
   <rect width="100%" height="100%" fill="#0b1020"/>
@@ -180,27 +186,54 @@
       </g>
     </g>
 
-    <!-- highlight targets that will be shot (individually animated) -->
+    <!-- targets with destruction animations coordinated to bullet arrivals -->
     <g id="targets" fill="#1f6f3f">
+      <!-- t1 -->
       <rect id="t1" x="90" y="36" width="14" height="14" rx="2">
-        <animate attributeName="fill" values="#34d399;#10b981;#34d399" begin="0.9s" dur="0.6s" fill="freeze"/>
-        <animate attributeName="fill-opacity" values="1;0.2;1" begin="0.9s" dur="0.6s"/>
+        <!-- hit: fade + drop + spin -->
+        <animate attributeName="opacity" to="0" dur="0.25s" begin="b1.end" fill="freeze"/>
+        <animate attributeName="y" to="60" dur="0.35s" begin="b1.end" fill="freeze"/>
+        <animateTransform attributeName="transform" type="rotate" begin="b1.end" dur="0.35s" values="0 97 43; 24 97 43" fill="freeze"/>
+        <!-- reset for next cycle -->
+        <animate attributeName="opacity" to="1" dur="0.001s" begin="b5.end+0.6s" fill="freeze"/>
+        <animate attributeName="y" to="36" dur="0.001s" begin="b5.end+0.6s" fill="freeze"/>
+        <animateTransform attributeName="transform" type="rotate" begin="b5.end+0.6s" dur="0.001s" values="0 97 43; 0 97 43" fill="freeze"/>
       </rect>
+      <!-- t2 -->
       <rect id="t2" x="126" y="72" width="14" height="14" rx="2">
-        <animate attributeName="fill" values="#34d399;#10b981;#34d399" begin="1.7s" dur="0.6s" fill="freeze"/>
-        <animate attributeName="fill-opacity" values="1;0.2;1" begin="1.7s" dur="0.6s"/>
+        <animate attributeName="opacity" to="0" dur="0.25s" begin="b2.end" fill="freeze"/>
+        <animate attributeName="y" to="96" dur="0.35s" begin="b2.end" fill="freeze"/>
+        <animateTransform attributeName="transform" type="rotate" begin="b2.end" dur="0.35s" values="0 133 79; -18 133 79" fill="freeze"/>
+        <animate attributeName="opacity" to="1" dur="0.001s" begin="b5.end+0.6s" fill="freeze"/>
+        <animate attributeName="y" to="72" dur="0.001s" begin="b5.end+0.6s" fill="freeze"/>
+        <animateTransform attributeName="transform" type="rotate" begin="b5.end+0.6s" dur="0.001s" values="0 133 79; 0 133 79" fill="freeze"/>
       </rect>
+      <!-- t3 -->
       <rect id="t3" x="162" y="18" width="14" height="14" rx="2">
-        <animate attributeName="fill" values="#34d399;#10b981;#34d399" begin="2.5s" dur="0.6s" fill="freeze"/>
-        <animate attributeName="fill-opacity" values="1;0.2;1" begin="2.5s" dur="0.6s"/>
+        <animate attributeName="opacity" to="0" dur="0.25s" begin="b3.end" fill="freeze"/>
+        <animate attributeName="y" to="42" dur="0.35s" begin="b3.end" fill="freeze"/>
+        <animateTransform attributeName="transform" type="rotate" begin="b3.end" dur="0.35s" values="0 169 25; 20 169 25" fill="freeze"/>
+        <animate attributeName="opacity" to="1" dur="0.001s" begin="b5.end+0.6s" fill="freeze"/>
+        <animate attributeName="y" to="18" dur="0.001s" begin="b5.end+0.6s" fill="freeze"/>
+        <animateTransform attributeName="transform" type="rotate" begin="b5.end+0.6s" dur="0.001s" values="0 169 25; 0 169 25" fill="freeze"/>
       </rect>
+      <!-- t4 -->
       <rect id="t4" x="198" y="90" width="14" height="14" rx="2">
-        <animate attributeName="fill" values="#34d399;#10b981;#34d399" begin="3.3s" dur="0.6s" fill="freeze"/>
-        <animate attributeName="fill-opacity" values="1;0.2;1" begin="3.3s" dur="0.6s"/>
+        <animate attributeName="opacity" to="0" dur="0.25s" begin="b4.end" fill="freeze"/>
+        <animate attributeName="y" to="114" dur="0.35s" begin="b4.end" fill="freeze"/>
+        <animateTransform attributeName="transform" type="rotate" begin="b4.end" dur="0.35s" values="0 205 97; -16 205 97" fill="freeze"/>
+        <animate attributeName="opacity" to="1" dur="0.001s" begin="b5.end+0.6s" fill="freeze"/>
+        <animate attributeName="y" to="90" dur="0.001s" begin="b5.end+0.6s" fill="freeze"/>
+        <animateTransform attributeName="transform" type="rotate" begin="b5.end+0.6s" dur="0.001s" values="0 205 97; 0 205 97" fill="freeze"/>
       </rect>
+      <!-- t5 -->
       <rect id="t5" x="234" y="54" width="14" height="14" rx="2">
-        <animate attributeName="fill" values="#34d399;#10b981;#34d399" begin="4.1s" dur="0.6s" fill="freeze"/>
-        <animate attributeName="fill-opacity" values="1;0.2;1" begin="4.1s" dur="0.6s"/>
+        <animate attributeName="opacity" to="0" dur="0.25s" begin="b5.end" fill="freeze"/>
+        <animate attributeName="y" to="78" dur="0.35s" begin="b5.end" fill="freeze"/>
+        <animateTransform attributeName="transform" type="rotate" begin="b5.end" dur="0.35s" values="0 241 61; 18 241 61" fill="freeze"/>
+        <animate attributeName="opacity" to="1" dur="0.001s" begin="b5.end+0.6s" fill="freeze"/>
+        <animate attributeName="y" to="54" dur="0.001s" begin="b5.end+0.6s" fill="freeze"/>
+        <animateTransform attributeName="transform" type="rotate" begin="b5.end+0.6s" dur="0.001s" values="0 241 61; 0 241 61" fill="freeze"/>
       </rect>
     </g>
   </g>
@@ -216,46 +249,61 @@
     </rect>
   </g>
 
-  <!-- bullets (staggered) -->
+  <!-- bullets with synchronized impacts -->
   <g id="bullets" fill="url(#g-laser)" filter="url(#f-glow)">
-    <rect x="430" y="190" width="2" height="8">
-      <animate attributeName="y" values="190;70;190" keyTimes="0;0.5;1" dur="8s" begin="0.6s" repeatCount="indefinite"/>
-    </rect>
-    <rect x="466" y="190" width="2" height="8">
-      <animate attributeName="y" values="190;106;190" keyTimes="0;0.5;1" dur="8s" begin="1.4s" repeatCount="indefinite"/>
-    </rect>
-    <rect x="502" y="190" width="2" height="8">
-      <animate attributeName="y" values="190;52;190" keyTimes="0;0.5;1" dur="8s" begin="2.2s" repeatCount="indefinite"/>
-    </rect>
-    <rect x="538" y="190" width="2" height="8">
-      <animate attributeName="y" values="190;124;190" keyTimes="0;0.5;1" dur="8s" begin="3.0s" repeatCount="indefinite"/>
-    </rect>
-    <rect x="574" y="190" width="2" height="8">
-      <animate attributeName="y" values="190;88;190" keyTimes="0;0.5;1" dur="8s" begin="3.8s" repeatCount="indefinite"/>
-    </rect>
+    <circle r="2">
+      <animateMotion id="b1" dur="0.9s" begin="0s; b5.end+1s" fill="freeze">
+        <mpath href="#p1"/>
+      </animateMotion>
+      <animate attributeName="opacity" values="1;1;0" keyTimes="0;0.99;1" dur="0.9s" begin="b1.begin"/>
+    </circle>
+    <circle r="2">
+      <animateMotion id="b2" dur="0.8s" begin="b1.end+0.2s" fill="freeze">
+        <mpath href="#p2"/>
+      </animateMotion>
+      <animate attributeName="opacity" values="1;1;0" keyTimes="0;0.99;1" dur="0.8s" begin="b2.begin"/>
+    </circle>
+    <circle r="2">
+      <animateMotion id="b3" dur="0.8s" begin="b2.end+0.2s" fill="freeze">
+        <mpath href="#p3"/>
+      </animateMotion>
+      <animate attributeName="opacity" values="1;1;0" keyTimes="0;0.99;1" dur="0.8s" begin="b3.begin"/>
+    </circle>
+    <circle r="2">
+      <animateMotion id="b4" dur="0.7s" begin="b3.end+0.2s" fill="freeze">
+        <mpath href="#p4"/>
+      </animateMotion>
+      <animate attributeName="opacity" values="1;1;0" keyTimes="0;0.99;1" dur="0.7s" begin="b4.begin"/>
+    </circle>
+    <circle r="2">
+      <animateMotion id="b5" dur="0.7s" begin="b4.end+0.2s" fill="freeze">
+        <mpath href="#p5"/>
+      </animateMotion>
+      <animate attributeName="opacity" values="1;1;0" keyTimes="0;0.99;1" dur="0.7s" begin="b5.begin"/>
+    </circle>
   </g>
 
-  <!-- impact sparks -->
-  <g id="sparks" fill="#a7f3d0" opacity="0.9">
-    <circle cx="230" cy="88" r="1">
-      <animate attributeName="r" values="1;6;1" dur="8s" begin="0.9s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.9;0.1;0.9" dur="8s" begin="0.9s" repeatCount="indefinite"/>
+  <!-- impact sparks synchronized to bullet arrivals -->
+  <g id="sparks" fill="#a7f3d0" opacity="0.95">
+    <circle cx="237" cy="95" r="1">
+      <animate attributeName="r" values="1;5;0.5" dur="0.5s" begin="b1.end"/>
+      <animate attributeName="opacity" values="1;0.2;0" dur="0.5s" begin="b1.end"/>
     </circle>
-    <circle cx="266" cy="124" r="1">
-      <animate attributeName="r" values="1;6;1" dur="8s" begin="1.7s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.9;0.1;0.9" dur="8s" begin="1.7s" repeatCount="indefinite"/>
+    <circle cx="273" cy="131" r="1">
+      <animate attributeName="r" values="1;5;0.5" dur="0.5s" begin="b2.end"/>
+      <animate attributeName="opacity" values="1;0.2;0" dur="0.5s" begin="b2.end"/>
     </circle>
-    <circle cx="302" cy="70" r="1">
-      <animate attributeName="r" values="1;6;1" dur="8s" begin="2.5s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.9;0.1;0.9" dur="8s" begin="2.5s" repeatCount="indefinite"/>
+    <circle cx="309" cy="77" r="1">
+      <animate attributeName="r" values="1;5;0.5" dur="0.5s" begin="b3.end"/>
+      <animate attributeName="opacity" values="1;0.2;0" dur="0.5s" begin="b3.end"/>
     </circle>
-    <circle cx="338" cy="142" r="1">
-      <animate attributeName="r" values="1;6;1" dur="8s" begin="3.3s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.9;0.1;0.9" dur="8s" begin="3.3s" repeatCount="indefinite"/>
+    <circle cx="345" cy="149" r="1">
+      <animate attributeName="r" values="1;5;0.5" dur="0.5s" begin="b4.end"/>
+      <animate attributeName="opacity" values="1;0.2;0" dur="0.5s" begin="b4.end"/>
     </circle>
-    <circle cx="374" cy="106" r="1">
-      <animate attributeName="r" values="1;6;1" dur="8s" begin="4.1s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.9;0.1;0.9" dur="8s" begin="4.1s" repeatCount="indefinite"/>
+    <circle cx="381" cy="113" r="1">
+      <animate attributeName="r" values="1;5;0.5" dur="0.5s" begin="b5.end"/>
+      <animate attributeName="opacity" values="1;0.2;0" dur="0.5s" begin="b5.end"/>
     </circle>
   </g>
 

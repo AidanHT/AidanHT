@@ -54,10 +54,6 @@ I build ML‑powered products, reliable cloud infrastructure, and delightful UIs
 ### By the numbers
 
 <a href="https://github.com/AidanHT">
-  <img src="https://github-readme-stats.vercel.app/api?username=AidanHT&show_icons=true&theme=tokyonight&hide_border=true" alt="GitHub stats" />
-</a>
-
-<a href="https://github.com/AidanHT">
   <img src="https://github-readme-streak-stats.herokuapp.com?user=AidanHT&theme=tokyonight&hide_border=true" alt="GitHub Streak" />
 </a>
 
