@@ -17,10 +17,6 @@ I build ML‑powered products, reliable cloud infrastructure, and delightful UIs
   <img src="docs/assets/hero.svg" alt="Aidan Tran Hero" />
 </p>
 
-<p align="center">
-  <img src="docs/assets/wave.svg" alt="divider" />
-</p>
-
 #### Tech I use
 
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
@@ -50,8 +46,10 @@ I build ML‑powered products, reliable cloud infrastructure, and delightful UIs
 ---
 
 <p align="center">
-  <img src="docs/assets/wave.svg" alt="divider" />
-</p>
+  <img src="docs/assets/retro.svg" width="720" alt="Retro Tech Animation" />
+  <br />
+  <em>Built with pure SVG — a nod to retro games and low‑level graphics</em>
+ </p>
 
 ### By the numbers
 
@@ -78,19 +76,6 @@ I build ML‑powered products, reliable cloud infrastructure, and delightful UIs
 </p>
 
 ---
-
-### Interactive demos (playable)
-
-<p align="center">
-  <a href="https://aidanht.github.io/GithubProfile/game/">
-    <img src="https://img.shields.io/badge/Play%20Retro%20Shooter-1f2937?style=for-the-badge&logo=game&logoColor=white" alt="Play Retro Shooter" />
-  </a>
-  <a href="https://aidanht.github.io/GithubProfile/3d/">
-    <img src="https://img.shields.io/badge/Open%203D%20Viewer-0ea5e9?style=for-the-badge&logo=three.js&logoColor=white" alt="Open 3D Viewer" />
-  </a>
-</p>
-
-To host on GitHub Pages: Settings → Pages → Source: `main`, Folder: `docs` → Save. The buttons above will point to your live demos.
 
 ---
 
