@@ -1,314 +1,693 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="960" height="240" viewBox="0 0 960 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-  <title id="title">Galaxia Commit Grid — Retro Arcade</title>
-  <desc id="desc">A retro ship shoots at green commit squares; inline, script-free SVG animation for GitHub README.</desc>
+<!--
+  Enhanced Galaxia SVG — retro arcade style ship shooting a GitHub-style green grid.
+  Pure SVG with advanced SMIL animations, particle effects, and improved visuals.
+  Place this file in your repo and reference it in your README with:
 
+  <img src="./galaxia.svg" width="820" alt="Enhanced Galaxia Commit Grid"/>
+
+  Features:
+  - Smooth ship movement with thruster effects
+  - Enhanced projectile trails and explosions
+  - Dynamic star field with twinkling
+  - Improved grid animations with ripple effects
+  - HUD with animated elements
+  - Better color gradients and lighting
+-->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="820" height="360" viewBox="0 0 820 360" role="img" aria-labelledby="title desc">
+  <title id="title">Enhanced Galaxia — Advanced Spaceship shooting a GitHub-style commit grid</title>
+  <desc id="desc">An enhanced retro spaceship with thruster effects moves smoothly along the bottom and fires projectiles with trails at selected green cells in a 7×53 grid. Hit cells fade out with ripple effects, stars twinkle, and the HUD displays animated information.</desc>
+
+  <!-- ====== Enhanced Defs ====== -->
   <defs>
-    <linearGradient id="g-thruster" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#22d3ee"/>
-      <stop offset="100%" stop-color="#7c3aed"/>
-    </linearGradient>
-    <linearGradient id="g-laser" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#a7f3d0"/>
-      <stop offset="100%" stop-color="#34d399"/>
-    </linearGradient>
-    <filter id="f-glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="2" result="b"/>
+    <!-- Enhanced star symbol with glow -->
+    <circle id="star" r="1.2" fill="#C9E6FF">
+      <animate attributeName="opacity" values="0.3;1;0.3" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Twinkling star variant -->
+    <circle id="twinkle-star" r="1.5" fill="#FFFFFF">
+      <animate attributeName="opacity" values="0.2;1;0.2" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="1.5;2;1.5" dur="2s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Enhanced grid cell template with better rounded corners - GitHub-style dimensions -->
+    <rect id="cell" width="12" height="12" rx="2" ry="2"/>
+
+    <!-- Advanced glow filter for the ship and bullets -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="glow"/>
       <feMerge>
-        <feMergeNode in="b"/>
+        <feMergeNode in="glow"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
-    <!-- bullet paths from ship nose (460,182) to target centers -->
-    <path id="p1" d="M460 182 L237 95"/>
-    <path id="p2" d="M460 182 L273 131"/>
-    <path id="p3" d="M460 182 L309 77"/>
-    <path id="p4" d="M460 182 L345 149"/>
-    <path id="p5" d="M460 182 L381 113"/>
+
+    <!-- Enhanced glow for projectiles -->
+    <filter id="bullet-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0 0.8 0 0 0  0 0 0.2 0 0  0 0 0 15 -5" result="glow"/>
+      <feMerge>
+        <feMergeNode in="glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Explosion effect filter -->
+    <filter id="explosion" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0 0.6 0 0 0  0 0 0.2 0 0  0 0 0 20 -8" result="explosion-glow"/>
+      <feMerge>
+        <feMergeNode in="explosion-glow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- ====== NEW ADVANCED ROCKET SYSTEM DEFINITIONS ====== -->
+    
+    <!-- Advanced Rocket Ship Design -->
+    <g id="advanced-rocket">
+      <!-- Main body with metallic gradient -->
+      <defs>
+        <linearGradient id="rocket-body" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#E8F4FD;stop-opacity:1" />
+          <stop offset="30%" style="stop-color:#B8DCF2;stop-opacity:1" />
+          <stop offset="70%" style="stop-color:#7CB9E8;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#4A90C2;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="rocket-nose" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#FF6B35;stop-opacity:1" />
+          <stop offset="50%" style="stop-color:#FF8C42;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#FFB366;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="wing-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#2EA043;stop-opacity:1" />
+          <stop offset="50%" style="stop-color:#39D353;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#9BE9A8;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      
+      <!-- Main rocket body -->
+      <rect x="0" y="-35" width="45" height="25" rx="3" fill="url(#rocket-body)" stroke="#4A90C2" stroke-width="1"/>
+      
+      <!-- Rocket nose cone -->
+      <polygon points="45,-35 60,-25 45,-10" fill="url(#rocket-nose)" stroke="#FF6B35" stroke-width="1"/>
+      
+      <!-- Wings -->
+      <polygon points="8,-35 0,-45 12,-40 20,-35" fill="url(#wing-gradient)" stroke="#2EA043" stroke-width="1"/>
+      <polygon points="8,-10 0,-5 12,-10 20,-10" fill="url(#wing-gradient)" stroke="#2EA043" stroke-width="1"/>
+      
+      <!-- Cockpit window -->
+      <ellipse cx="35" cy="-22.5" rx="8" ry="6" fill="#87CEEB" stroke="#4682B4" stroke-width="1" opacity="0.8"/>
+      <ellipse cx="37" cy="-24" rx="3" ry="2" fill="#FFFFFF" opacity="0.6"/>
+      
+      <!-- Rocket details -->
+      <rect x="5" y="-30" width="3" height="15" fill="#FF8C42" opacity="0.8"/>
+      <rect x="12" y="-28" width="2" height="11" fill="#39D353" opacity="0.8"/>
+      <rect x="18" y="-32" width="2" height="17" fill="#FF6B35" opacity="0.8"/>
+    </g>
+    
+    <!-- Advanced Fuel Tank System -->
+    <g id="fuel-tank">
+      <!-- Main fuel tank -->
+      <rect x="0" y="0" width="8" height="20" rx="4" fill="#1E3A8A" stroke="#3B82F6" stroke-width="1"/>
+      
+      <!-- Fuel level indicator -->
+      <rect x="1" y="2" width="6" height="16" rx="3" fill="#1E40AF">
+        <animate attributeName="height" values="16;12;8;4;16" dur="10s" repeatCount="indefinite"/>
+        <animate attributeName="y" values="2;6;10;14;2" dur="10s" repeatCount="indefinite"/>
+      </rect>
+      
+      <!-- Fuel level markings -->
+      <line x1="0" y1="5" x2="8" y2="5" stroke="#60A5FA" stroke-width="0.5"/>
+      <line x1="0" y1="10" x2="8" y2="10" stroke="#60A5FA" stroke-width="0.5"/>
+      <line x1="0" y1="15" x2="8" y2="15" stroke="#60A5FA" stroke-width="0.5"/>
+      
+      <!-- Tank cap -->
+      <circle cx="4" cy="1" r="2" fill="#374151" stroke="#6B7280" stroke-width="0.5"/>
+    </g>
+    
+    <!-- Advanced Thruster System -->
+    <g id="advanced-thruster">
+      <!-- Main thruster nozzle -->
+      <polygon points="0,0 -8,-4 -8,4" fill="#374151" stroke="#6B7280" stroke-width="1"/>
+      
+      <!-- Flame layers with realistic physics -->
+      <ellipse cx="-12" cy="0" rx="6" ry="3" fill="#FF4500" opacity="0.9">
+        <animate attributeName="rx" values="6;10;6" dur="0.1s" repeatCount="indefinite"/>
+        <animate attributeName="ry" values="3;5;3" dur="0.1s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.9;0.6;0.9" dur="0.1s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="-16" cy="0" rx="8" ry="4" fill="#FF6A00" opacity="0.7">
+        <animate attributeName="rx" values="8;12;8" dur="0.12s" repeatCount="indefinite"/>
+        <animate attributeName="ry" values="4;6;4" dur="0.12s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.7;0.4;0.7" dur="0.12s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse cx="-20" cy="0" rx="10" ry="5" fill="#FFB347" opacity="0.5">
+        <animate attributeName="rx" values="10;14;10" dur="0.08s" repeatCount="indefinite"/>
+        <animate attributeName="ry" values="5;7;5" dur="0.08s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.5;0.2;0.5" dur="0.08s" repeatCount="indefinite"/>
+      </ellipse>
+      
+      <!-- Exhaust particles -->
+      <circle cx="-25" cy="-2" r="1" fill="#FFFF00" opacity="0.8">
+        <animate attributeName="cx" values="-25;-35;-25" dur="0.3s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.8;0;0.8" dur="0.3s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="-25" cy="2" r="1" fill="#FF8C00" opacity="0.6">
+        <animate attributeName="cx" values="-25;-35;-25" dur="0.4s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;0;0.6" dur="0.4s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    
+    <!-- Advanced Energy Ball Projectile -->
+    <g id="energy-ball">
+      <!-- Core energy ball -->
+      <circle r="4" fill="#00FFFF" opacity="0.9">
+        <animate attributeName="r" values="4;6;4" dur="0.2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.9;0.6;0.9" dur="0.2s" repeatCount="indefinite"/>
+      </circle>
+      
+      <!-- Inner energy core -->
+      <circle r="2" fill="#FFFFFF" opacity="0.8">
+        <animate attributeName="r" values="2;3;2" dur="0.15s" repeatCount="indefinite"/>
+      </circle>
+      
+      <!-- Energy particles around the ball -->
+      <circle cx="5" cy="0" r="1" fill="#00FFFF" opacity="0.6">
+        <animateTransform attributeName="transform" type="rotate" values="0;360" dur="1s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;0;0.6" dur="0.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="-5" cy="0" r="1" fill="#FFFF00" opacity="0.6">
+        <animateTransform attributeName="transform" type="rotate" values="0;-360" dur="1.2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;0;0.6" dur="0.6s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="0" cy="5" r="1" fill="#FF00FF" opacity="0.6">
+        <animateTransform attributeName="transform" type="rotate" values="0;360" dur="0.8s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;0;0.6" dur="0.4s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    
+    <!-- Energy Ball Trail -->
+    <g id="energy-trail">
+      <ellipse rx="3" ry="1" fill="#00FFFF" opacity="0.6">
+        <animate attributeName="rx" values="3;6;3" dur="0.3s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;0.2;0.6" dur="0.3s" repeatCount="indefinite"/>
+      </ellipse>
+      <ellipse rx="2" ry="0.5" fill="#FFFFFF" opacity="0.8">
+        <animate attributeName="rx" values="2;4;2" dur="0.25s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.8;0.3;0.8" dur="0.25s" repeatCount="indefinite"/>
+      </ellipse>
+    </g>
+
+    <!-- Projectile trail effect -->
+    <g id="trail">
+      <circle r="2" fill="#F9F871" opacity="0.6">
+        <animate attributeName="opacity" values="0.6;0" dur="0.3s" repeatCount="indefinite"/>
+        <animate attributeName="r" values="2;0" dur="0.3s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+
+    <!-- Ripple effect for grid hits -->
+    <g id="ripple">
+      <circle r="0" fill="none" stroke="#39D353" stroke-width="2" opacity="0.8">
+        <animate attributeName="r" values="0;20" dur="0.4s" repeatCount="1"/>
+        <animate attributeName="opacity" values="0.8;0" dur="0.4s" repeatCount="1"/>
+      </circle>
+    </g>
   </defs>
 
-  <rect width="100%" height="100%" fill="#0b1020"/>
-
-  <!-- subtle starfield -->
-  <g opacity="0.35" fill="#94a3b8">
-    <circle cx="40" cy="30" r="1"/>
-    <circle cx="140" cy="18" r="1"/>
-    <circle cx="220" cy="42" r="1"/>
-    <circle cx="300" cy="20" r="1"/>
-    <circle cx="520" cy="26" r="1"/>
-    <circle cx="600" cy="14" r="1"/>
-    <circle cx="740" cy="36" r="1"/>
-    <circle cx="860" cy="22" r="1"/>
-    <circle cx="900" cy="48" r="1"/>
+  <!-- ====== Enhanced Background (space with gradient) ====== -->
+  <defs>
+    <radialGradient id="space-bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#0A0E1A;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#05070E;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#020305;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#space-bg)"/>
+  
+  <!-- Enhanced star field with twinkling -->
+  <g opacity="0.9">
+    <use xlink:href="#star" x="60"  y="40"/>
+    <use xlink:href="#twinkle-star" x="120" y="70"/>
+    <use xlink:href="#star" x="210" y="55"/>
+    <use xlink:href="#twinkle-star" x="310" y="35"/>
+    <use xlink:href="#star" x="430" y="60"/>
+    <use xlink:href="#twinkle-star" x="520" y="40"/>
+    <use xlink:href="#star" x="650" y="55"/>
+    <use xlink:href="#twinkle-star" x="760" y="70"/>
+    <use xlink:href="#star" x="700" y="120"/>
+    <use xlink:href="#twinkle-star" x="90"  y="130"/>
+    <use xlink:href="#star" x="400" y="100"/>
+    <use xlink:href="#twinkle-star" x="580" y="150"/>
+    <!-- Additional stars for more depth -->
+    <use xlink:href="#star" x="180" y="25"/>
+    <use xlink:href="#twinkle-star" x="480" y="85"/>
+    <use xlink:href="#star" x="720" y="45"/>
+    <use xlink:href="#twinkle-star" x="250" y="160"/>
   </g>
 
-  <!-- commit grid -->
-  <g id="commit-grid" transform="translate(140,52)">
-    <!-- 14 columns x 7 rows; cell 14x14 with 4px gap -->
-    <!-- background cells -->
-    <g fill="#143d2a">
-      <!-- generate columns -->
-      <!-- column 0..13 manually placed -->
-      <g transform="translate(0,0)">
-        <rect x="0" y="0" width="14" height="14" rx="2"/>
-        <rect x="0" y="18" width="14" height="14" rx="2"/>
-        <rect x="0" y="36" width="14" height="14" rx="2"/>
-        <rect x="0" y="54" width="14" height="14" rx="2"/>
-        <rect x="0" y="72" width="14" height="14" rx="2"/>
-        <rect x="0" y="90" width="14" height="14" rx="2"/>
-        <rect x="0" y="108" width="14" height="14" rx="2"/>
-      </g>
-      <g transform="translate(18,0)">
-        <rect x="0" y="0" width="14" height="14" rx="2"/>
-        <rect x="0" y="18" width="14" height="14" rx="2"/>
-        <rect x="0" y="36" width="14" height="14" rx="2"/>
-        <rect x="0" y="54" width="14" height="14" rx="2"/>
-        <rect x="0" y="72" width="14" height="14" rx="2"/>
-        <rect x="0" y="90" width="14" height="14" rx="2"/>
-        <rect x="0" y="108" width="14" height="14" rx="2"/>
-      </g>
-      <g transform="translate(36,0)">
-        <rect x="0" y="0" width="14" height="14" rx="2"/>
-        <rect x="0" y="18" width="14" height="14" rx="2"/>
-        <rect x="0" y="36" width="14" height="14" rx="2"/>
-        <rect x="0" y="54" width="14" height="14" rx="2"/>
-        <rect x="0" y="72" width="14" height="14" rx="2"/>
-        <rect x="0" y="90" width="14" height="14" rx="2"/>
-        <rect x="0" y="108" width="14" height="14" rx="2"/>
-      </g>
-      <g transform="translate(54,0)">
-        <rect x="0" y="0" width="14" height="14" rx="2"/>
-        <rect x="0" y="18" width="14" height="14" rx="2"/>
-        <rect x="0" y="36" width="14" height="14" rx="2"/>
-        <rect x="0" y="54" width="14" height="14" rx="2"/>
-        <rect x="0" y="72" width="14" height="14" rx="2"/>
-        <rect x="0" y="90" width="14" height="14" rx="2"/>
-        <rect x="0" y="108" width="14" height="14" rx="2"/>
-      </g>
-      <g transform="translate(72,0)">
-        <rect x="0" y="0" width="14" height="14" rx="2"/>
-        <rect x="0" y="18" width="14" height="14" rx="2"/>
-        <rect x="0" y="36" width="14" height="14" rx="2"/>
-        <rect x="0" y="54" width="14" height="14" rx="2"/>
-        <rect x="0" y="72" width="14" height="14" rx="2"/>
-        <rect x="0" y="90" width="14" height="14" rx="2"/>
-        <rect x="0" y="108" width="14" height="14" rx="2"/>
-      </g>
-      <g transform="translate(90,0)">
-        <rect x="0" y="0" width="14" height="14" rx="2"/>
-        <rect x="0" y="18" width="14" height="14" rx="2"/>
-        <rect x="0" y="36" width="14" height="14" rx="2"/>
-        <rect x="0" y="54" width="14" height="14" rx="2"/>
-        <rect x="0" y="72" width="14" height="14" rx="2"/>
-        <rect x="0" y="90" width="14" height="14" rx="2"/>
-        <rect x="0" y="108" width="14" height="14" rx="2"/>
-      </g>
-      <g transform="translate(108,0)">
-        <rect x="0" y="0" width="14" height="14" rx="2"/>
-        <rect x="0" y="18" width="14" height="14" rx="2"/>
-        <rect x="0" y="36" width="14" height="14" rx="2"/>
-        <rect x="0" y="54" width="14" height="14" rx="2"/>
-        <rect x="0" y="72" width="14" height="14" rx="2"/>
-        <rect x="0" y="90" width="14" height="14" rx="2"/>
-        <rect x="0" y="108" width="14" height="14" rx="2"/>
-      </g>
-      <g transform="translate(126,0)">
-        <rect x="0" y="0" width="14" height="14" rx="2"/>
-        <rect x="0" y="18" width="14" height="14" rx="2"/>
-        <rect x="0" y="36" width="14" height="14" rx="2"/>
-        <rect x="0" y="54" width="14" height="14" rx="2"/>
-        <rect x="0" y="72" width="14" height="14" rx="2"/>
-        <rect x="0" y="90" width="14" height="14" rx="2"/>
-        <rect x="0" y="108" width="14" height="14" rx="2"/>
-      </g>
-      <g transform="translate(144,0)">
-        <rect x="0" y="0" width="14" height="14" rx="2"/>
-        <rect x="0" y="18" width="14" height="14" rx="2"/>
-        <rect x="0" y="36" width="14" height="14" rx="2"/>
-        <rect x="0" y="54" width="14" height="14" rx="2"/>
-        <rect x="0" y="72" width="14" height="14" rx="2"/>
-        <rect x="0" y="90" width="14" height="14" rx="2"/>
-        <rect x="0" y="108" width="14" height="14" rx="2"/>
-      </g>
-      <g transform="translate(162,0)">
-        <rect x="0" y="0" width="14" height="14" rx="2"/>
-        <rect x="0" y="18" width="14" height="14" rx="2"/>
-        <rect x="0" y="36" width="14" height="14" rx="2"/>
-        <rect x="0" y="54" width="14" height="14" rx="2"/>
-        <rect x="0" y="72" width="14" height="14" rx="2"/>
-        <rect x="0" y="90" width="14" height="14" rx="2"/>
-        <rect x="0" y="108" width="14" height="14" rx="2"/>
-      </g>
-      <g transform="translate(180,0)">
-        <rect x="0" y="0" width="14" height="14" rx="2"/>
-        <rect x="0" y="18" width="14" height="14" rx="2"/>
-        <rect x="0" y="36" width="14" height="14" rx="2"/>
-        <rect x="0" y="54" width="14" height="14" rx="2"/>
-        <rect x="0" y="72" width="14" height="14" rx="2"/>
-        <rect x="0" y="90" width="14" height="14" rx="2"/>
-        <rect x="0" y="108" width="14" height="14" rx="2"/>
-      </g>
-      <g transform="translate(198,0)">
-        <rect x="0" y="0" width="14" height="14" rx="2"/>
-        <rect x="0" y="18" width="14" height="14" rx="2"/>
-        <rect x="0" y="36" width="14" height="14" rx="2"/>
-        <rect x="0" y="54" width="14" height="14" rx="2"/>
-        <rect x="0" y="72" width="14" height="14" rx="2"/>
-        <rect x="0" y="90" width="14" height="14" rx="2"/>
-        <rect x="0" y="108" width="14" height="14" rx="2"/>
-      </g>
-      <g transform="translate(216,0)">
-        <rect x="0" y="0" width="14" height="14" rx="2"/>
-        <rect x="0" y="18" width="14" height="14" rx="2"/>
-        <rect x="0" y="36" width="14" height="14" rx="2"/>
-        <rect x="0" y="54" width="14" height="14" rx="2"/>
-        <rect x="0" y="72" width="14" height="14" rx="2"/>
-        <rect x="0" y="90" width="14" height="14" rx="2"/>
-        <rect x="0" y="108" width="14" height="14" rx="2"/>
-      </g>
-      <g transform="translate(234,0)">
-        <rect x="0" y="0" width="14" height="14" rx="2"/>
-        <rect x="0" y="18" width="14" height="14" rx="2"/>
-        <rect x="0" y="36" width="14" height="14" rx="2"/>
-        <rect x="0" y="54" width="14" height="14" rx="2"/>
-        <rect x="0" y="72" width="14" height="14" rx="2"/>
-        <rect x="0" y="90" width="14" height="14" rx="2"/>
-        <rect x="0" y="108" width="14" height="14" rx="2"/>
-      </g>
-      <g transform="translate(252,0)">
-        <rect x="0" y="0" width="14" height="14" rx="2"/>
-        <rect x="0" y="18" width="14" height="14" rx="2"/>
-        <rect x="0" y="36" width="14" height="14" rx="2"/>
-        <rect x="0" y="54" width="14" height="14" rx="2"/>
-        <rect x="0" y="72" width="14" height="14" rx="2"/>
-        <rect x="0" y="90" width="14" height="14" rx="2"/>
-        <rect x="0" y="108" width="14" height="14" rx="2"/>
-      </g>
+  <!-- ====== Enhanced Grid (7 rows × 53 columns for GitHub-style) ====== -->
+  <!-- Origin for grid -->
+  <g id="grid" transform="translate(50, 90)">
+    <!-- rows spaced by 14, cols spaced by 14 for GitHub-style tight spacing -->
+    <!-- Create 7×53 cells using repeated <use> for full year -->
+    <g id="row0" transform="translate(0,0)">
+      <!-- Week 1-13 -->
+      <use xlink:href="#cell" x="0" fill="#0e4429"/><use xlink:href="#cell" x="14" fill="#006d32"/><use xlink:href="#cell" x="28" fill="#26a641"/><use xlink:href="#cell" x="42" fill="#39d353"/><use xlink:href="#cell" x="56" fill="#26a641"/><use xlink:href="#cell" x="70" fill="#0e4429"/><use xlink:href="#cell" x="84" fill="#006d32" id="tgt9"/><use xlink:href="#cell" x="98" fill="#39d353"/><use xlink:href="#cell" x="112" fill="#26a641"/><use xlink:href="#cell" x="126" fill="#0e4429"/><use xlink:href="#cell" x="140" fill="#006d32"/><use xlink:href="#cell" x="154" fill="#26a641"/><use xlink:href="#cell" x="168" fill="#39d353" id="tgt1"/>
+      <!-- Week 14-26 -->
+      <use xlink:href="#cell" x="182" fill="#26a641"/><use xlink:href="#cell" x="196" fill="#0e4429"/><use xlink:href="#cell" x="210" fill="#006d32"/><use xlink:href="#cell" x="224" fill="#26a641"/><use xlink:href="#cell" x="238" fill="#39d353"/><use xlink:href="#cell" x="252" fill="#26a641"/><use xlink:href="#cell" x="266" fill="#0e4429"/><use xlink:href="#cell" x="280" fill="#006d32"/><use xlink:href="#cell" x="294" fill="#26a641"/><use xlink:href="#cell" x="308" fill="#39d353"/><use xlink:href="#cell" x="322" fill="#26a641"/><use xlink:href="#cell" x="336" fill="#0e4429"/><use xlink:href="#cell" x="350" fill="#006d32"/>
+      <!-- Week 27-39 -->
+      <use xlink:href="#cell" x="364" fill="#26a641"/><use xlink:href="#cell" x="378" fill="#39d353"/><use xlink:href="#cell" x="392" fill="#26a641"/><use xlink:href="#cell" x="406" fill="#0e4429"/><use xlink:href="#cell" x="420" fill="#006d32"/><use xlink:href="#cell" x="434" fill="#26a641"/><use xlink:href="#cell" x="448" fill="#39d353"/><use xlink:href="#cell" x="462" fill="#26a641"/><use xlink:href="#cell" x="476" fill="#0e4429"/><use xlink:href="#cell" x="490" fill="#006d32"/><use xlink:href="#cell" x="504" fill="#26a641"/><use xlink:href="#cell" x="518" fill="#39d353"/><use xlink:href="#cell" x="532" fill="#26a641"/>
+      <!-- Week 40-52 -->
+      <use xlink:href="#cell" x="546" fill="#0e4429"/><use xlink:href="#cell" x="560" fill="#006d32"/><use xlink:href="#cell" x="574" fill="#26a641"/><use xlink:href="#cell" x="588" fill="#39d353" id="tgt4"/><use xlink:href="#cell" x="602" fill="#26a641"/><use xlink:href="#cell" x="616" fill="#0e4429"/><use xlink:href="#cell" x="630" fill="#006d32"/><use xlink:href="#cell" x="644" fill="#26a641"/><use xlink:href="#cell" x="658" fill="#39d353"/><use xlink:href="#cell" x="672" fill="#26a641"/><use xlink:href="#cell" x="686" fill="#0e4429"/><use xlink:href="#cell" x="700" fill="#006d32"/><use xlink:href="#cell" x="714" fill="#26a641"/>
+      <!-- Week 53 -->
+      <use xlink:href="#cell" x="728" fill="#39d353"/>
     </g>
-
-    <!-- targets with destruction animations coordinated to bullet arrivals -->
-    <g id="targets" fill="#1f6f3f">
-      <!-- t1 -->
-      <rect id="t1" x="90" y="36" width="14" height="14" rx="2">
-        <!-- hit: fade + drop + spin -->
-        <animate attributeName="opacity" to="0" dur="0.25s" begin="b1.end" fill="freeze"/>
-        <animate attributeName="y" to="60" dur="0.35s" begin="b1.end" fill="freeze"/>
-        <animateTransform attributeName="transform" type="rotate" begin="b1.end" dur="0.35s" values="0 97 43; 24 97 43" fill="freeze"/>
-        <!-- reset for next cycle -->
-        <animate attributeName="opacity" to="1" dur="0.001s" begin="b5.end+0.6s" fill="freeze"/>
-        <animate attributeName="y" to="36" dur="0.001s" begin="b5.end+0.6s" fill="freeze"/>
-        <animateTransform attributeName="transform" type="rotate" begin="b5.end+0.6s" dur="0.001s" values="0 97 43; 0 97 43" fill="freeze"/>
-      </rect>
-      <!-- t2 -->
-      <rect id="t2" x="126" y="72" width="14" height="14" rx="2">
-        <animate attributeName="opacity" to="0" dur="0.25s" begin="b2.end" fill="freeze"/>
-        <animate attributeName="y" to="96" dur="0.35s" begin="b2.end" fill="freeze"/>
-        <animateTransform attributeName="transform" type="rotate" begin="b2.end" dur="0.35s" values="0 133 79; -18 133 79" fill="freeze"/>
-        <animate attributeName="opacity" to="1" dur="0.001s" begin="b5.end+0.6s" fill="freeze"/>
-        <animate attributeName="y" to="72" dur="0.001s" begin="b5.end+0.6s" fill="freeze"/>
-        <animateTransform attributeName="transform" type="rotate" begin="b5.end+0.6s" dur="0.001s" values="0 133 79; 0 133 79" fill="freeze"/>
-      </rect>
-      <!-- t3 -->
-      <rect id="t3" x="162" y="18" width="14" height="14" rx="2">
-        <animate attributeName="opacity" to="0" dur="0.25s" begin="b3.end" fill="freeze"/>
-        <animate attributeName="y" to="42" dur="0.35s" begin="b3.end" fill="freeze"/>
-        <animateTransform attributeName="transform" type="rotate" begin="b3.end" dur="0.35s" values="0 169 25; 20 169 25" fill="freeze"/>
-        <animate attributeName="opacity" to="1" dur="0.001s" begin="b5.end+0.6s" fill="freeze"/>
-        <animate attributeName="y" to="18" dur="0.001s" begin="b5.end+0.6s" fill="freeze"/>
-        <animateTransform attributeName="transform" type="rotate" begin="b5.end+0.6s" dur="0.001s" values="0 169 25; 0 169 25" fill="freeze"/>
-      </rect>
-      <!-- t4 -->
-      <rect id="t4" x="198" y="90" width="14" height="14" rx="2">
-        <animate attributeName="opacity" to="0" dur="0.25s" begin="b4.end" fill="freeze"/>
-        <animate attributeName="y" to="114" dur="0.35s" begin="b4.end" fill="freeze"/>
-        <animateTransform attributeName="transform" type="rotate" begin="b4.end" dur="0.35s" values="0 205 97; -16 205 97" fill="freeze"/>
-        <animate attributeName="opacity" to="1" dur="0.001s" begin="b5.end+0.6s" fill="freeze"/>
-        <animate attributeName="y" to="90" dur="0.001s" begin="b5.end+0.6s" fill="freeze"/>
-        <animateTransform attributeName="transform" type="rotate" begin="b5.end+0.6s" dur="0.001s" values="0 205 97; 0 205 97" fill="freeze"/>
-      </rect>
-      <!-- t5 -->
-      <rect id="t5" x="234" y="54" width="14" height="14" rx="2">
-        <animate attributeName="opacity" to="0" dur="0.25s" begin="b5.end" fill="freeze"/>
-        <animate attributeName="y" to="78" dur="0.35s" begin="b5.end" fill="freeze"/>
-        <animateTransform attributeName="transform" type="rotate" begin="b5.end" dur="0.35s" values="0 241 61; 18 241 61" fill="freeze"/>
-        <animate attributeName="opacity" to="1" dur="0.001s" begin="b5.end+0.6s" fill="freeze"/>
-        <animate attributeName="y" to="54" dur="0.001s" begin="b5.end+0.6s" fill="freeze"/>
-        <animateTransform attributeName="transform" type="rotate" begin="b5.end+0.6s" dur="0.001s" values="0 241 61; 0 241 61" fill="freeze"/>
-      </rect>
+    <g id="row1" transform="translate(0,14)">
+      <use xlink:href="#cell" x="0" fill="#006d32"/><use xlink:href="#cell" x="14" fill="#26a641"/><use xlink:href="#cell" x="28" fill="#39d353"/><use xlink:href="#cell" x="42" fill="#26a641"/><use xlink:href="#cell" x="56" fill="#0e4429"/><use xlink:href="#cell" x="70" fill="#39d353"/><use xlink:href="#cell" x="84" fill="#26a641"/><use xlink:href="#cell" x="98" fill="#0e4429"/><use xlink:href="#cell" x="112" fill="#006d32"/><use xlink:href="#cell" x="126" fill="#26a641"/><use xlink:href="#cell" x="140" fill="#39d353"/><use xlink:href="#cell" x="154" fill="#26a641"/><use xlink:href="#cell" x="168" fill="#0e4429"/>
+      <use xlink:href="#cell" x="182" fill="#006d32"/><use xlink:href="#cell" x="196" fill="#26a641"/><use xlink:href="#cell" x="210" fill="#39d353"/><use xlink:href="#cell" x="224" fill="#26a641"/><use xlink:href="#cell" x="238" fill="#0e4429"/><use xlink:href="#cell" x="252" fill="#006d32"/><use xlink:href="#cell" x="266" fill="#26a641"/><use xlink:href="#cell" x="280" fill="#39d353"/><use xlink:href="#cell" x="294" fill="#26a641"/><use xlink:href="#cell" x="308" fill="#0e4429"/><use xlink:href="#cell" x="322" fill="#006d32" id="tgt8"/><use xlink:href="#cell" x="336" fill="#26a641"/><use xlink:href="#cell" x="350" fill="#39d353"/>
+      <use xlink:href="#cell" x="364" fill="#26a641"/><use xlink:href="#cell" x="378" fill="#0e4429"/><use xlink:href="#cell" x="392" fill="#006d32"/><use xlink:href="#cell" x="406" fill="#26a641"/><use xlink:href="#cell" x="420" fill="#39d353"/><use xlink:href="#cell" x="434" fill="#26a641"/><use xlink:href="#cell" x="448" fill="#0e4429"/><use xlink:href="#cell" x="462" fill="#006d32"/><use xlink:href="#cell" x="476" fill="#26a641"/><use xlink:href="#cell" x="490" fill="#39d353"/><use xlink:href="#cell" x="504" fill="#26a641"/><use xlink:href="#cell" x="518" fill="#0e4429" id="tgt10"/><use xlink:href="#cell" x="532" fill="#006d32"/>
+      <use xlink:href="#cell" x="546" fill="#26a641"/><use xlink:href="#cell" x="560" fill="#39d353"/><use xlink:href="#cell" x="574" fill="#26a641"/><use xlink:href="#cell" x="588" fill="#0e4429"/><use xlink:href="#cell" x="602" fill="#006d32"/><use xlink:href="#cell" x="616" fill="#26a641"/><use xlink:href="#cell" x="630" fill="#39d353"/><use xlink:href="#cell" x="644" fill="#26a641"/><use xlink:href="#cell" x="658" fill="#0e4429"/><use xlink:href="#cell" x="672" fill="#006d32" id="tgt2"/><use xlink:href="#cell" x="686" fill="#26a641"/><use xlink:href="#cell" x="700" fill="#39d353"/><use xlink:href="#cell" x="714" fill="#26a641"/>
+      <use xlink:href="#cell" x="728" fill="#0e4429"/>
+    </g>
+    <g id="row2" transform="translate(0,28)">
+      <use xlink:href="#cell" x="0" fill="#39d353"/><use xlink:href="#cell" x="14" fill="#26a641"/><use xlink:href="#cell" x="28" fill="#0e4429"/><use xlink:href="#cell" x="42" fill="#006d32"/><use xlink:href="#cell" x="56" fill="#39d353"/><use xlink:href="#cell" x="70" fill="#26a641"/><use xlink:href="#cell" x="84" fill="#39d353"/><use xlink:href="#cell" x="98" fill="#26a641"/><use xlink:href="#cell" x="112" fill="#006d32"/><use xlink:href="#cell" x="126" fill="#39d353"/><use xlink:href="#cell" x="140" fill="#26a641"/><use xlink:href="#cell" x="154" fill="#0e4429"/><use xlink:href="#cell" x="168" fill="#006d32"/>
+      <use xlink:href="#cell" x="182" fill="#39d353"/><use xlink:href="#cell" x="196" fill="#26a641"/><use xlink:href="#cell" x="210" fill="#0e4429"/><use xlink:href="#cell" x="224" fill="#006d32"/><use xlink:href="#cell" x="238" fill="#26a641"/><use xlink:href="#cell" x="252" fill="#39d353"/><use xlink:href="#cell" x="266" fill="#26a641"/><use xlink:href="#cell" x="280" fill="#0e4429"/><use xlink:href="#cell" x="294" fill="#006d32"/><use xlink:href="#cell" x="308" fill="#39d353"/><use xlink:href="#cell" x="322" fill="#26a641"/><use xlink:href="#cell" x="336" fill="#0e4429"/><use xlink:href="#cell" x="350" fill="#006d32"/>
+      <use xlink:href="#cell" x="364" fill="#39d353"/><use xlink:href="#cell" x="378" fill="#26a641"/><use xlink:href="#cell" x="392" fill="#0e4429"/><use xlink:href="#cell" x="406" fill="#006d32" id="tgt11"/><use xlink:href="#cell" x="420" fill="#39d353"/><use xlink:href="#cell" x="434" fill="#26a641"/><use xlink:href="#cell" x="448" fill="#0e4429"/><use xlink:href="#cell" x="462" fill="#006d32" id="tgt6"/><use xlink:href="#cell" x="476" fill="#39d353"/><use xlink:href="#cell" x="490" fill="#26a641"/><use xlink:href="#cell" x="504" fill="#0e4429"/><use xlink:href="#cell" x="518" fill="#006d32"/><use xlink:href="#cell" x="532" fill="#39d353"/>
+      <use xlink:href="#cell" x="546" fill="#26a641"/><use xlink:href="#cell" x="560" fill="#0e4429"/><use xlink:href="#cell" x="574" fill="#006d32"/><use xlink:href="#cell" x="588" fill="#39d353"/><use xlink:href="#cell" x="602" fill="#26a641"/><use xlink:href="#cell" x="616" fill="#0e4429"/><use xlink:href="#cell" x="630" fill="#006d32"/><use xlink:href="#cell" x="644" fill="#39d353"/><use xlink:href="#cell" x="658" fill="#26a641"/><use xlink:href="#cell" x="672" fill="#0e4429"/><use xlink:href="#cell" x="686" fill="#006d32"/><use xlink:href="#cell" x="700" fill="#39d353"/><use xlink:href="#cell" x="714" fill="#26a641"/>
+      <use xlink:href="#cell" x="728" fill="#0e4429"/>
+    </g>
+    <g id="row3" transform="translate(0,42)">
+      <use xlink:href="#cell" x="0" fill="#26a641"/><use xlink:href="#cell" x="14" fill="#39d353"/><use xlink:href="#cell" x="28" fill="#26a641"/><use xlink:href="#cell" x="42" fill="#0e4429"/><use xlink:href="#cell" x="56" fill="#006d32"/><use xlink:href="#cell" x="70" fill="#39d353"/><use xlink:href="#cell" x="84" fill="#26a641"/><use xlink:href="#cell" x="98" fill="#006d32"/><use xlink:href="#cell" x="112" fill="#39d353"/><use xlink:href="#cell" x="126" fill="#26a641"/><use xlink:href="#cell" x="140" fill="#0e4429"/><use xlink:href="#cell" x="154" fill="#006d32"/><use xlink:href="#cell" x="168" fill="#39d353"/>
+      <use xlink:href="#cell" x="182" fill="#26a641"/><use xlink:href="#cell" x="196" fill="#0e4429"/><use xlink:href="#cell" x="210" fill="#006d32"/><use xlink:href="#cell" x="224" fill="#26a641"/><use xlink:href="#cell" x="238" fill="#39d353"/><use xlink:href="#cell" x="252" fill="#26a641" id="tgt3"/><use xlink:href="#cell" x="266" fill="#0e4429"/><use xlink:href="#cell" x="280" fill="#006d32"/><use xlink:href="#cell" x="294" fill="#26a641" id="tgt13"/><use xlink:href="#cell" x="308" fill="#39d353"/><use xlink:href="#cell" x="322" fill="#26a641"/><use xlink:href="#cell" x="336" fill="#0e4429"/><use xlink:href="#cell" x="350" fill="#006d32"/>
+      <use xlink:href="#cell" x="364" fill="#26a641"/><use xlink:href="#cell" x="378" fill="#39d353"/><use xlink:href="#cell" x="392" fill="#26a641"/><use xlink:href="#cell" x="406" fill="#0e4429"/><use xlink:href="#cell" x="420" fill="#006d32"/><use xlink:href="#cell" x="434" fill="#26a641"/><use xlink:href="#cell" x="448" fill="#39d353"/><use xlink:href="#cell" x="462" fill="#26a641"/><use xlink:href="#cell" x="476" fill="#0e4429"/><use xlink:href="#cell" x="490" fill="#006d32"/><use xlink:href="#cell" x="504" fill="#26a641"/><use xlink:href="#cell" x="518" fill="#39d353"/><use xlink:href="#cell" x="532" fill="#26a641"/>
+      <use xlink:href="#cell" x="546" fill="#0e4429"/><use xlink:href="#cell" x="560" fill="#006d32"/><use xlink:href="#cell" x="574" fill="#26a641"/><use xlink:href="#cell" x="588" fill="#39d353"/><use xlink:href="#cell" x="602" fill="#26a641"/><use xlink:href="#cell" x="616" fill="#0e4429"/><use xlink:href="#cell" x="630" fill="#006d32"/><use xlink:href="#cell" x="644" fill="#26a641"/><use xlink:href="#cell" x="658" fill="#39d353"/><use xlink:href="#cell" x="672" fill="#26a641"/><use xlink:href="#cell" x="686" fill="#0e4429" id="tgt12"/><use xlink:href="#cell" x="700" fill="#006d32"/><use xlink:href="#cell" x="714" fill="#26a641"/>
+      <use xlink:href="#cell" x="728" fill="#39d353"/>
+    </g>
+    <g id="row4" transform="translate(0,56)">
+      <use xlink:href="#cell" x="0" fill="#0e4429"/><use xlink:href="#cell" x="14" fill="#006d32"/><use xlink:href="#cell" x="28" fill="#39d353"/><use xlink:href="#cell" x="42" fill="#26a641"/><use xlink:href="#cell" x="56" fill="#39d353"/><use xlink:href="#cell" x="70" fill="#26a641"/><use xlink:href="#cell" x="84" fill="#0e4429"/><use xlink:href="#cell" x="98" fill="#39d353"/><use xlink:href="#cell" x="112" fill="#26a641"/><use xlink:href="#cell" x="126" fill="#006d32"/><use xlink:href="#cell" x="140" fill="#39d353"/><use xlink:href="#cell" x="154" fill="#26a641"/><use xlink:href="#cell" x="168" fill="#0e4429"/>
+      <use xlink:href="#cell" x="182" fill="#006d32"/><use xlink:href="#cell" x="196" fill="#39d353"/><use xlink:href="#cell" x="210" fill="#26a641"/><use xlink:href="#cell" x="224" fill="#0e4429"/><use xlink:href="#cell" x="238" fill="#006d32"/><use xlink:href="#cell" x="252" fill="#39d353"/><use xlink:href="#cell" x="266" fill="#26a641"/><use xlink:href="#cell" x="280" fill="#0e4429"/><use xlink:href="#cell" x="294" fill="#006d32"/><use xlink:href="#cell" x="308" fill="#39d353"/><use xlink:href="#cell" x="322" fill="#26a641"/><use xlink:href="#cell" x="336" fill="#0e4429"/><use xlink:href="#cell" x="350" fill="#006d32"/>
+      <use xlink:href="#cell" x="364" fill="#39d353"/><use xlink:href="#cell" x="378" fill="#26a641"/><use xlink:href="#cell" x="392" fill="#0e4429"/><use xlink:href="#cell" x="406" fill="#006d32"/><use xlink:href="#cell" x="420" fill="#39d353"/><use xlink:href="#cell" x="434" fill="#26a641"/><use xlink:href="#cell" x="448" fill="#0e4429"/><use xlink:href="#cell" x="462" fill="#006d32"/><use xlink:href="#cell" x="476" fill="#39d353"/><use xlink:href="#cell" x="490" fill="#26a641"/><use xlink:href="#cell" x="504" fill="#0e4429"/><use xlink:href="#cell" x="518" fill="#006d32"/><use xlink:href="#cell" x="532" fill="#39d353"/>
+      <use xlink:href="#cell" x="546" fill="#26a641"/><use xlink:href="#cell" x="560" fill="#0e4429"/><use xlink:href="#cell" x="574" fill="#006d32"/><use xlink:href="#cell" x="588" fill="#39d353"/><use xlink:href="#cell" x="602" fill="#26a641"/><use xlink:href="#cell" x="616" fill="#0e4429"/><use xlink:href="#cell" x="630" fill="#006d32"/><use xlink:href="#cell" x="644" fill="#39d353"/><use xlink:href="#cell" x="658" fill="#26a641"/><use xlink:href="#cell" x="672" fill="#0e4429"/><use xlink:href="#cell" x="686" fill="#006d32"/><use xlink:href="#cell" x="700" fill="#39d353"/><use xlink:href="#cell" x="714" fill="#26a641" id="tgt5"/>
+      <use xlink:href="#cell" x="728" fill="#0e4429"/>
+    </g>
+    <g id="row5" transform="translate(0,70)">
+      <use xlink:href="#cell" x="0" fill="#006d32"/><use xlink:href="#cell" x="14" fill="#26a641"/><use xlink:href="#cell" x="28" fill="#39d353"/><use xlink:href="#cell" x="42" fill="#26a641"/><use xlink:href="#cell" x="56" fill="#0e4429"/><use xlink:href="#cell" x="70" fill="#39d353"/><use xlink:href="#cell" x="84" fill="#26a641"/><use xlink:href="#cell" x="98" fill="#0e4429"/><use xlink:href="#cell" x="112" fill="#006d32"/><use xlink:href="#cell" x="126" fill="#26a641"/><use xlink:href="#cell" x="140" fill="#39d353"/><use xlink:href="#cell" x="154" fill="#26a641"/><use xlink:href="#cell" x="168" fill="#0e4429"/>
+      <use xlink:href="#cell" x="182" fill="#006d32"/><use xlink:href="#cell" x="196" fill="#39d353"/><use xlink:href="#cell" x="210" fill="#26a641"/><use xlink:href="#cell" x="224" fill="#0e4429"/><use xlink:href="#cell" x="238" fill="#006d32"/><use xlink:href="#cell" x="252" fill="#39d353"/><use xlink:href="#cell" x="266" fill="#26a641"/><use xlink:href="#cell" x="280" fill="#0e4429"/><use xlink:href="#cell" x="294" fill="#006d32"/><use xlink:href="#cell" x="308" fill="#39d353"/><use xlink:href="#cell" x="322" fill="#26a641"/><use xlink:href="#cell" x="336" fill="#0e4429"/><use xlink:href="#cell" x="350" fill="#006d32"/>
+      <use xlink:href="#cell" x="364" fill="#39d353"/><use xlink:href="#cell" x="378" fill="#26a641"/><use xlink:href="#cell" x="392" fill="#0e4429"/><use xlink:href="#cell" x="406" fill="#006d32"/><use xlink:href="#cell" x="420" fill="#39d353" id="tgt7"/><use xlink:href="#cell" x="434" fill="#26a641"/><use xlink:href="#cell" x="448" fill="#0e4429"/><use xlink:href="#cell" x="462" fill="#006d32"/><use xlink:href="#cell" x="476" fill="#39d353"/><use xlink:href="#cell" x="490" fill="#26a641"/><use xlink:href="#cell" x="504" fill="#0e4429"/><use xlink:href="#cell" x="518" fill="#006d32"/><use xlink:href="#cell" x="532" fill="#39d353"/>
+      <use xlink:href="#cell" x="546" fill="#26a641"/><use xlink:href="#cell" x="560" fill="#0e4429"/><use xlink:href="#cell" x="574" fill="#006d32"/><use xlink:href="#cell" x="588" fill="#39d353"/><use xlink:href="#cell" x="602" fill="#26a641"/><use xlink:href="#cell" x="616" fill="#0e4429"/><use xlink:href="#cell" x="630" fill="#006d32"/><use xlink:href="#cell" x="644" fill="#39d353"/><use xlink:href="#cell" x="658" fill="#26a641"/><use xlink:href="#cell" x="672" fill="#0e4429"/><use xlink:href="#cell" x="686" fill="#006d32"/><use xlink:href="#cell" x="700" fill="#39d353"/><use xlink:href="#cell" x="714" fill="#26a641"/>
+      <use xlink:href="#cell" x="728" fill="#0e4429" id="tgt14"/>
+    </g>
+    <g id="row6" transform="translate(0,84)">
+      <use xlink:href="#cell" x="0" fill="#39d353"/><use xlink:href="#cell" x="14" fill="#26a641"/><use xlink:href="#cell" x="28" fill="#0e4429"/><use xlink:href="#cell" x="42" fill="#006d32"/><use xlink:href="#cell" x="56" fill="#39d353" id="tgt15"/><use xlink:href="#cell" x="70" fill="#26a641"/><use xlink:href="#cell" x="84" fill="#39d353"/><use xlink:href="#cell" x="98" fill="#26a641"/><use xlink:href="#cell" x="112" fill="#006d32"/><use xlink:href="#cell" x="126" fill="#39d353"/><use xlink:href="#cell" x="140" fill="#26a641"/><use xlink:href="#cell" x="154" fill="#0e4429"/><use xlink:href="#cell" x="168" fill="#006d32"/>
+      <use xlink:href="#cell" x="182" fill="#39d353"/><use xlink:href="#cell" x="196" fill="#26a641"/><use xlink:href="#cell" x="210" fill="#0e4429"/><use xlink:href="#cell" x="224" fill="#006d32"/><use xlink:href="#cell" x="238" fill="#39d353"/><use xlink:href="#cell" x="252" fill="#26a641"/><use xlink:href="#cell" x="266" fill="#0e4429"/><use xlink:href="#cell" x="280" fill="#006d32"/><use xlink:href="#cell" x="294" fill="#39d353"/><use xlink:href="#cell" x="308" fill="#26a641"/><use xlink:href="#cell" x="322" fill="#0e4429"/><use xlink:href="#cell" x="336" fill="#006d32"/><use xlink:href="#cell" x="350" fill="#39d353"/>
+      <use xlink:href="#cell" x="364" fill="#26a641"/><use xlink:href="#cell" x="378" fill="#0e4429"/><use xlink:href="#cell" x="392" fill="#006d32"/><use xlink:href="#cell" x="406" fill="#39d353"/><use xlink:href="#cell" x="420" fill="#26a641"/><use xlink:href="#cell" x="434" fill="#0e4429"/><use xlink:href="#cell" x="448" fill="#006d32"/><use xlink:href="#cell" x="462" fill="#39d353"/><use xlink:href="#cell" x="476" fill="#26a641"/><use xlink:href="#cell" x="490" fill="#0e4429"/><use xlink:href="#cell" x="504" fill="#006d32"/><use xlink:href="#cell" x="518" fill="#39d353"/><use xlink:href="#cell" x="532" fill="#26a641"/>
+      <use xlink:href="#cell" x="546" fill="#0e4429"/><use xlink:href="#cell" x="560" fill="#006d32"/><use xlink:href="#cell" x="574" fill="#39d353" id="tgt16"/><use xlink:href="#cell" x="588" fill="#26a641"/><use xlink:href="#cell" x="602" fill="#0e4429"/><use xlink:href="#cell" x="616" fill="#006d32"/><use xlink:href="#cell" x="630" fill="#39d353"/><use xlink:href="#cell" x="644" fill="#26a641"/><use xlink:href="#cell" x="658" fill="#0e4429"/><use xlink:href="#cell" x="672" fill="#006d32"/><use xlink:href="#cell" x="686" fill="#39d353"/><use xlink:href="#cell" x="700" fill="#26a641"/><use xlink:href="#cell" x="714" fill="#0e4429"/>
+      <use xlink:href="#cell" x="728" fill="#006d32"/>
     </g>
   </g>
 
-  <!-- ship -->
-  <g id="ship" transform="translate(460,192)">
-    <polygon points="0,-10 10,6 -10,6" fill="#e2e8f0" filter="url(#f-glow)"/>
-    <polygon points="0,6 4,16 -4,16" fill="url(#g-thruster)">
-      <animate attributeName="points" values="0,6 4,16 -4,16; 0,6 3,18 -3,18; 0,6 4,16 -4,16" dur="0.5s" repeatCount="indefinite"/>
-    </polygon>
-    <rect x="-1" y="-16" width="2" height="6" fill="#22d3ee">
-      <animate attributeName="opacity" values="0.4;1;0.4" dur="1.2s" repeatCount="indefinite"/>
-    </rect>
+  <!-- Enhanced target hit animations with ripple effects -->
+  <g id="grid-hit-animations">
+    <!-- Ripple effects for each target - Updated for distributed positions -->
+    <use xlink:href="#ripple" x="218" y="90" opacity="0">
+      <set attributeName="opacity" to="1" begin="m1.end"/>
+    </use>
+    <use xlink:href="#ripple" x="722" y="104" opacity="0">
+      <set attributeName="opacity" to="1" begin="m2.end"/>
+    </use>
+    <use xlink:href="#ripple" x="302" y="132" opacity="0">
+      <set attributeName="opacity" to="1" begin="m3.end"/>
+    </use>
+    <use xlink:href="#ripple" x="638" y="90" opacity="0">
+      <set attributeName="opacity" to="1" begin="m4.end"/>
+    </use>
+    <use xlink:href="#ripple" x="764" y="146" opacity="0">
+      <set attributeName="opacity" to="1" begin="m5.end"/>
+    </use>
+    <use xlink:href="#ripple" x="512" y="118" opacity="0">
+      <set attributeName="opacity" to="1" begin="m6.end"/>
+    </use>
+    <use xlink:href="#ripple" x="470" y="160" opacity="0">
+      <set attributeName="opacity" to="1" begin="m7.end"/>
+    </use>
+    <use xlink:href="#ripple" x="372" y="104" opacity="0">
+      <set attributeName="opacity" to="1" begin="m8.end"/>
+    </use>
+    
+    <!-- Ripple effects for additional targets -->
+    <use xlink:href="#ripple" x="134" y="90" opacity="0">
+      <set attributeName="opacity" to="1" begin="m9.end"/>
+    </use>
+    <use xlink:href="#ripple" x="568" y="104" opacity="0">
+      <set attributeName="opacity" to="1" begin="m10.end"/>
+    </use>
+    <use xlink:href="#ripple" x="456" y="118" opacity="0">
+      <set attributeName="opacity" to="1" begin="m11.end"/>
+    </use>
+    <use xlink:href="#ripple" x="736" y="132" opacity="0">
+      <set attributeName="opacity" to="1" begin="m12.end"/>
+    </use>
+    <use xlink:href="#ripple" x="344" y="146" opacity="0">
+      <set attributeName="opacity" to="1" begin="m13.end"/>
+    </use>
+    <use xlink:href="#ripple" x="778" y="160" opacity="0">
+      <set attributeName="opacity" to="1" begin="m14.end"/>
+    </use>
+    <use xlink:href="#ripple" x="106" y="174" opacity="0">
+      <set attributeName="opacity" to="1" begin="m15.end"/>
+    </use>
+    <use xlink:href="#ripple" x="624" y="174" opacity="0">
+      <set attributeName="opacity" to="1" begin="m16.end"/>
+    </use>
+    
+    <!-- Enhanced cell fade animations with energy ball impacts -->
+    <animate xlink:href="#tgt1" attributeName="opacity" values="1;0;0;1" dur="12s" begin="ball1-motion.end" repeatCount="indefinite"/>
+    <animate xlink:href="#tgt2" attributeName="opacity" values="1;0;0;1" dur="12s" begin="ball2-motion.end" repeatCount="indefinite"/>
+    <animate xlink:href="#tgt3" attributeName="opacity" values="1;0;0;1" dur="12s" begin="ball3-motion.end" repeatCount="indefinite"/>
+    <animate xlink:href="#tgt4" attributeName="opacity" values="1;0;0;1" dur="12s" begin="ball4-motion.end" repeatCount="indefinite"/>
+    <animate xlink:href="#tgt5" attributeName="opacity" values="1;0;0;1" dur="12s" begin="ball5-motion.end" repeatCount="indefinite"/>
+    <animate xlink:href="#tgt6" attributeName="opacity" values="1;0;0;1" dur="12s" begin="ball6-motion.end" repeatCount="indefinite"/>
+    <animate xlink:href="#tgt7" attributeName="opacity" values="1;0;0;1" dur="12s" begin="ball7-motion.end" repeatCount="indefinite"/>
+    <animate xlink:href="#tgt8" attributeName="opacity" values="1;0;0;1" dur="12s" begin="ball8-motion.end" repeatCount="indefinite"/>
+    
+    <!-- Additional target fade animations for extra energy balls -->
+    <animate xlink:href="#tgt9" attributeName="opacity" values="1;0;0;1" dur="12s" begin="ball9-motion.end" repeatCount="indefinite"/>
+    <animate xlink:href="#tgt10" attributeName="opacity" values="1;0;0;1" dur="12s" begin="ball10-motion.end" repeatCount="indefinite"/>
+    <animate xlink:href="#tgt11" attributeName="opacity" values="1;0;0;1" dur="12s" begin="ball11-motion.end" repeatCount="indefinite"/>
+    <animate xlink:href="#tgt12" attributeName="opacity" values="1;0;0;1" dur="12s" begin="ball12-motion.end" repeatCount="indefinite"/>
+    
+    <!-- Remaining targets with distributed timing -->
+    <animate xlink:href="#tgt13" attributeName="opacity" values="1;0;0;1" dur="12s" begin="9s" repeatCount="indefinite"/>
+    <animate xlink:href="#tgt14" attributeName="opacity" values="1;0;0;1" dur="12s" begin="10s" repeatCount="indefinite"/>
+    <animate xlink:href="#tgt15" attributeName="opacity" values="1;0;0;1" dur="12s" begin="9.5s" repeatCount="indefinite"/>
+    <animate xlink:href="#tgt16" attributeName="opacity" values="1;0;0;1" dur="12s" begin="10.5s" repeatCount="indefinite"/>
   </g>
 
-  <!-- bullets with synchronized impacts -->
-  <g id="bullets" fill="url(#g-laser)" filter="url(#f-glow)">
-    <circle r="2">
-      <animateMotion id="b1" dur="0.9s" begin="0s; b5.end+1s" fill="freeze">
-        <mpath href="#p1"/>
-      </animateMotion>
-      <animate attributeName="opacity" values="1;1;0" keyTimes="0;0.99;1" dur="0.9s" begin="b1.begin"/>
+  <!-- ====== ADVANCED ROCKETSHIP WITH FUEL SYSTEM ====== -->
+  <g id="spaceship" transform="translate(60, 300)" filter="url(#glow)">
+    
+    <!-- Main rocket body -->
+    <use xlink:href="#advanced-rocket"/>
+    
+    <!-- Fuel tanks mounted on wings -->
+    <use xlink:href="#fuel-tank" x="-15" y="-35" transform="scale(0.8)"/>
+    <use xlink:href="#fuel-tank" x="-15" y="-5" transform="scale(0.8)"/>
+    
+    <!-- Dual thruster system -->
+    <use xlink:href="#advanced-thruster" x="0" y="-30"/>
+    <use xlink:href="#advanced-thruster" x="0" y="-15"/>
+    
+    <!-- Additional engine details -->
+    <rect x="-5" y="-28" width="8" height="3" fill="#FF6B35" opacity="0.7"/>
+    <rect x="-5" y="-17" width="8" height="3" fill="#FF6B35" opacity="0.7"/>
+    
+    <!-- Navigation lights -->
+    <circle cx="55" cy="-25" r="2" fill="#00FF00" opacity="0.8">
+      <animate attributeName="opacity" values="0.8;0.3;0.8" dur="1s" repeatCount="indefinite"/>
     </circle>
-    <circle r="2">
-      <animateMotion id="b2" dur="0.8s" begin="b1.end+0.2s" fill="freeze">
-        <mpath href="#p2"/>
-      </animateMotion>
-      <animate attributeName="opacity" values="1;1;0" keyTimes="0;0.99;1" dur="0.8s" begin="b2.begin"/>
+    <circle cx="2" cy="-40" r="1.5" fill="#FF0000" opacity="0.8">
+      <animate attributeName="opacity" values="0.8;0.3;0.8" dur="1.2s" repeatCount="indefinite"/>
     </circle>
-    <circle r="2">
-      <animateMotion id="b3" dur="0.8s" begin="b2.end+0.2s" fill="freeze">
-        <mpath href="#p3"/>
-      </animateMotion>
-      <animate attributeName="opacity" values="1;1;0" keyTimes="0;0.99;1" dur="0.8s" begin="b3.begin"/>
+    <circle cx="2" cy="-5" r="1.5" fill="#FF0000" opacity="0.8">
+      <animate attributeName="opacity" values="0.8;0.3;0.8" dur="1.4s" repeatCount="indefinite"/>
     </circle>
-    <circle r="2">
-      <animateMotion id="b4" dur="0.7s" begin="b3.end+0.2s" fill="freeze">
-        <mpath href="#p4"/>
-      </animateMotion>
-      <animate attributeName="opacity" values="1;1;0" keyTimes="0;0.99;1" dur="0.7s" begin="b4.begin"/>
-    </circle>
-    <circle r="2">
-      <animateMotion id="b5" dur="0.7s" begin="b4.end+0.2s" fill="freeze">
-        <mpath href="#p5"/>
-      </animateMotion>
-      <animate attributeName="opacity" values="1;1;0" keyTimes="0;0.99;1" dur="0.7s" begin="b5.begin"/>
-    </circle>
+    
+    <!-- Advanced movement with orbital patterns -->
+    <animateTransform attributeName="transform" type="translate" 
+                      values="60,300; 200,280; 350,290; 500,275; 650,285; 750,300; 650,325; 500,335; 350,320; 200,330; 60,300" 
+                      dur="12s" repeatCount="indefinite" 
+                      calcMode="spline" keySplines="0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1;0.4 0 0.6 1"/>
+    
+    <!-- Rotation for dynamic effect -->
+    <animateTransform attributeName="transform" type="rotate" 
+                      values="0 30 -22.5; 5 30 -22.5; 0 30 -22.5; -5 30 -22.5; 0 30 -22.5" 
+                      dur="12s" repeatCount="indefinite" additive="sum"/>
   </g>
 
-  <!-- impact sparks synchronized to bullet arrivals -->
-  <g id="sparks" fill="#a7f3d0" opacity="0.95">
-    <circle cx="237" cy="95" r="1">
-      <animate attributeName="r" values="1;5;0.5" dur="0.5s" begin="b1.end"/>
-      <animate attributeName="opacity" values="1;0.2;0" dur="0.5s" begin="b1.end"/>
-    </circle>
-    <circle cx="273" cy="131" r="1">
-      <animate attributeName="r" values="1;5;0.5" dur="0.5s" begin="b2.end"/>
-      <animate attributeName="opacity" values="1;0.2;0" dur="0.5s" begin="b2.end"/>
-    </circle>
-    <circle cx="309" cy="77" r="1">
-      <animate attributeName="r" values="1;5;0.5" dur="0.5s" begin="b3.end"/>
-      <animate attributeName="opacity" values="1;0.2;0" dur="0.5s" begin="b3.end"/>
-    </circle>
-    <circle cx="345" cy="149" r="1">
-      <animate attributeName="r" values="1;5;0.5" dur="0.5s" begin="b4.end"/>
-      <animate attributeName="opacity" values="1;0.2;0" dur="0.5s" begin="b4.end"/>
-    </circle>
-    <circle cx="381" cy="113" r="1">
-      <animate attributeName="r" values="1;5;0.5" dur="0.5s" begin="b5.end"/>
-      <animate attributeName="opacity" values="1;0.2;0" dur="0.5s" begin="b5.end"/>
-    </circle>
+  <!-- ====== ADVANCED ENERGY BALL PROJECTILE SYSTEM ====== -->
+  <g id="energy-projectiles" filter="url(#bullet-glow)">
+    
+    <!-- Energy Ball Generator - Creates continuous stream of energy balls -->
+    <g id="ball-generator">
+      
+      <!-- Energy Ball 1 - Continuous spawning with physics -->
+      <g id="ball1" opacity="0">
+        <use xlink:href="#energy-ball"/>
+        <use xlink:href="#energy-trail" x="-8" y="0"/>
+        
+        <!-- Spawn and movement animation -->
+        <animateTransform id="ball1-motion" attributeName="transform" type="translate"
+                          values="150,275; 218,90" dur="0.8s" 
+                          begin="1s; 13s" repeatCount="1"/>
+        <set attributeName="opacity" to="1" begin="1s; 13s"/>
+        <set attributeName="opacity" to="0" begin="1.8s; 13.8s"/>
+      </g>
+      
+      <!-- Energy Ball 2 -->
+      <g id="ball2" opacity="0">
+        <use xlink:href="#energy-ball"/>
+        <use xlink:href="#energy-trail" x="-8" y="0"/>
+        
+        <animateTransform id="ball2-motion" attributeName="transform" type="translate"
+                          values="350,290; 722,104" dur="1.2s" 
+                          begin="2s; 14s" repeatCount="1"/>
+        <set attributeName="opacity" to="1" begin="2s; 14s"/>
+        <set attributeName="opacity" to="0" begin="3.2s; 15.2s"/>
+      </g>
+      
+      <!-- Energy Ball 3 -->
+      <g id="ball3" opacity="0">
+        <use xlink:href="#energy-ball"/>
+        <use xlink:href="#energy-trail" x="-8" y="0"/>
+        
+        <animateTransform id="ball3-motion" attributeName="transform" type="translate"
+                          values="500,275; 302,132" dur="0.9s" 
+                          begin="3s; 15s" repeatCount="1"/>
+        <set attributeName="opacity" to="1" begin="3s; 15s"/>
+        <set attributeName="opacity" to="0" begin="3.9s; 15.9s"/>
+      </g>
+      
+      <!-- Energy Ball 4 -->
+      <g id="ball4" opacity="0">
+        <use xlink:href="#energy-ball"/>
+        <use xlink:href="#energy-trail" x="-8" y="0"/>
+        
+        <animateTransform id="ball4-motion" attributeName="transform" type="translate"
+                          values="650,285; 638,90" dur="1.0s" 
+                          begin="4s; 16s" repeatCount="1"/>
+        <set attributeName="opacity" to="1" begin="4s; 16s"/>
+        <set attributeName="opacity" to="0" begin="5.0s; 17.0s"/>
+      </g>
+      
+      <!-- Energy Ball 5 -->
+      <g id="ball5" opacity="0">
+        <use xlink:href="#energy-ball"/>
+        <use xlink:href="#energy-trail" x="-8" y="0"/>
+        
+        <animateTransform id="ball5-motion" attributeName="transform" type="translate"
+                          values="750,300; 764,146" dur="0.7s" 
+                          begin="5s; 17s" repeatCount="1"/>
+        <set attributeName="opacity" to="1" begin="5s; 17s"/>
+        <set attributeName="opacity" to="0" begin="5.7s; 17.7s"/>
+      </g>
+      
+      <!-- Energy Ball 6 -->
+      <g id="ball6" opacity="0">
+        <use xlink:href="#energy-ball"/>
+        <use xlink:href="#energy-trail" x="-8" y="0"/>
+        
+        <animateTransform id="ball6-motion" attributeName="transform" type="translate"
+                          values="500,335; 512,118" dur="0.9s" 
+                          begin="6s; 18s" repeatCount="1"/>
+        <set attributeName="opacity" to="1" begin="6s; 18s"/>
+        <set attributeName="opacity" to="0" begin="6.9s; 18.9s"/>
+      </g>
+      
+      <!-- Energy Ball 7 -->
+      <g id="ball7" opacity="0">
+        <use xlink:href="#energy-ball"/>
+        <use xlink:href="#energy-trail" x="-8" y="0"/>
+        
+        <animateTransform id="ball7-motion" attributeName="transform" type="translate"
+                          values="350,320; 470,160" dur="0.8s" 
+                          begin="7s; 19s" repeatCount="1"/>
+        <set attributeName="opacity" to="1" begin="7s; 19s"/>
+        <set attributeName="opacity" to="0" begin="7.8s; 19.8s"/>
+      </g>
+      
+      <!-- Energy Ball 8 -->
+      <g id="ball8" opacity="0">
+        <use xlink:href="#energy-ball"/>
+        <use xlink:href="#energy-trail" x="-8" y="0"/>
+        
+        <animateTransform id="ball8-motion" attributeName="transform" type="translate"
+                          values="200,330; 372,104" dur="1.0s" 
+                          begin="8s; 20s" repeatCount="1"/>
+        <set attributeName="opacity" to="1" begin="8s; 20s"/>
+        <set attributeName="opacity" to="0" begin="9.0s; 21.0s"/>
+      </g>
+      
+      <!-- Rapid fire energy balls for additional targets -->
+      <g id="ball9" opacity="0">
+        <use xlink:href="#energy-ball"/>
+        <use xlink:href="#energy-trail" x="-8" y="0"/>
+        
+        <animateTransform id="ball9-motion" attributeName="transform" type="translate"
+                          values="180,285; 134,90" dur="0.6s" 
+                          begin="1.5s; 13.5s" repeatCount="1"/>
+        <set attributeName="opacity" to="1" begin="1.5s; 13.5s"/>
+        <set attributeName="opacity" to="0" begin="2.1s; 14.1s"/>
+      </g>
+      
+      <g id="ball10" opacity="0">
+        <use xlink:href="#energy-ball"/>
+        <use xlink:href="#energy-trail" x="-8" y="0"/>
+        
+        <animateTransform id="ball10-motion" attributeName="transform" type="translate"
+                          values="480,280; 568,104" dur="0.7s" 
+                          begin="2.5s; 14.5s" repeatCount="1"/>
+        <set attributeName="opacity" to="1" begin="2.5s; 14.5s"/>
+        <set attributeName="opacity" to="0" begin="3.2s; 15.2s"/>
+      </g>
+      
+      <g id="ball11" opacity="0">
+        <use xlink:href="#energy-ball"/>
+        <use xlink:href="#energy-trail" x="-8" y="0"/>
+        
+        <animateTransform id="ball11-motion" attributeName="transform" type="translate"
+                          values="600,290; 456,118" dur="0.8s" 
+                          begin="3.5s; 15.5s" repeatCount="1"/>
+        <set attributeName="opacity" to="1" begin="3.5s; 15.5s"/>
+        <set attributeName="opacity" to="0" begin="4.3s; 16.3s"/>
+      </g>
+      
+      <g id="ball12" opacity="0">
+        <use xlink:href="#energy-ball"/>
+        <use xlink:href="#energy-trail" x="-8" y="0"/>
+        
+        <animateTransform id="ball12-motion" attributeName="transform" type="translate"
+                          values="720,295; 736,132" dur="0.5s" 
+                          begin="4.5s; 16.5s" repeatCount="1"/>
+        <set attributeName="opacity" to="1" begin="4.5s; 16.5s"/>
+        <set attributeName="opacity" to="0" begin="5.0s; 17.0s"/>
+      </g>
+      
+    </g>
+    
+    <!-- Impact effects for when energy balls hit targets -->
+    <g id="impact-effects">
+      <!-- Energy explosions at target locations -->
+      <circle r="8" cx="218" cy="90" fill="#00FFFF" opacity="0" filter="url(#explosion)">
+        <set attributeName="opacity" to="0.8" begin="ball1-motion.end"/>
+        <animate attributeName="r" values="8;20;8" dur="0.5s" begin="ball1-motion.end"/>
+        <animate attributeName="opacity" values="0.8;0" dur="0.5s" begin="ball1-motion.end"/>
+      </circle>
+      
+      <circle r="8" cx="722" cy="104" fill="#00FFFF" opacity="0" filter="url(#explosion)">
+        <set attributeName="opacity" to="0.8" begin="ball2-motion.end"/>
+        <animate attributeName="r" values="8;20;8" dur="0.5s" begin="ball2-motion.end"/>
+        <animate attributeName="opacity" values="0.8;0" dur="0.5s" begin="ball2-motion.end"/>
+      </circle>
+      
+      <circle r="8" cx="302" cy="132" fill="#00FFFF" opacity="0" filter="url(#explosion)">
+        <set attributeName="opacity" to="0.8" begin="ball3-motion.end"/>
+        <animate attributeName="r" values="8;20;8" dur="0.5s" begin="ball3-motion.end"/>
+        <animate attributeName="opacity" values="0.8;0" dur="0.5s" begin="ball3-motion.end"/>
+      </circle>
+      
+      <circle r="8" cx="638" cy="90" fill="#00FFFF" opacity="0" filter="url(#explosion)">
+        <set attributeName="opacity" to="0.8" begin="ball4-motion.end"/>
+        <animate attributeName="r" values="8;20;8" dur="0.5s" begin="ball4-motion.end"/>
+        <animate attributeName="opacity" values="0.8;0" dur="0.5s" begin="ball4-motion.end"/>
+      </circle>
+      
+      <circle r="8" cx="764" cy="146" fill="#00FFFF" opacity="0" filter="url(#explosion)">
+        <set attributeName="opacity" to="0.8" begin="ball5-motion.end"/>
+        <animate attributeName="r" values="8;20;8" dur="0.5s" begin="ball5-motion.end"/>
+        <animate attributeName="opacity" values="0.8;0" dur="0.5s" begin="ball5-motion.end"/>
+      </circle>
+      
+      <circle r="8" cx="512" cy="118" fill="#00FFFF" opacity="0" filter="url(#explosion)">
+        <set attributeName="opacity" to="0.8" begin="ball6-motion.end"/>
+        <animate attributeName="r" values="8;20;8" dur="0.5s" begin="ball6-motion.end"/>
+        <animate attributeName="opacity" values="0.8;0" dur="0.5s" begin="ball6-motion.end"/>
+      </circle>
+      
+      <circle r="8" cx="470" cy="160" fill="#00FFFF" opacity="0" filter="url(#explosion)">
+        <set attributeName="opacity" to="0.8" begin="ball7-motion.end"/>
+        <animate attributeName="r" values="8;20;8" dur="0.5s" begin="ball7-motion.end"/>
+        <animate attributeName="opacity" values="0.8;0" dur="0.5s" begin="ball7-motion.end"/>
+      </circle>
+      
+      <circle r="8" cx="372" cy="104" fill="#00FFFF" opacity="0" filter="url(#explosion)">
+        <set attributeName="opacity" to="0.8" begin="ball8-motion.end"/>
+        <animate attributeName="r" values="8;20;8" dur="0.5s" begin="ball8-motion.end"/>
+        <animate attributeName="opacity" values="0.8;0" dur="0.5s" begin="ball8-motion.end"/>
+      </circle>
+    </g>
   </g>
 
-  <!-- frame -->
-  <rect x="16" y="16" width="928" height="208" rx="8" ry="8" fill="none" stroke="#0ea5e9" stroke-opacity="0.35"/>
-  <text x="28" y="204" fill="#94a3b8" font-family="'SFMono-Regular',Consolas,monospace" font-size="10">inline svg • no js • retro arcade x commit grid</text>
+  <!-- ====== Enhanced HUD with Animated Elements ====== -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" fill="#9BE9A8" opacity="0.9">
+    <!-- Main title with glow effect -->
+    <text x="20" y="25" filter="url(#glow)">GALAXIA ▸ GITHUB GRID</text>
+    
+    <!-- Score display with animated counter effect -->
+    <text x="20" y="42">
+      SCORE <tspan id="score">000870</tspan> • HI <tspan id="high-score">005000</tspan>
+    </text>
+    
+    <!-- Fuel level display -->
+    <text x="20" y="56">
+      FUEL <tspan id="fuel-level">█████████░</tspan> • AMMO ∞
+    </text>
+    
+    <!-- Animated score counter -->
+    <animate xlink:href="#score" attributeName="textContent" 
+             values="000870;000890;000920;000960;001010;001070;001140;001220;001310;001410;001520"
+             dur="12s" repeatCount="indefinite"/>
+    
+    <!-- Animated fuel level indicator -->
+    <animate xlink:href="#fuel-level" attributeName="textContent" 
+             values="█████████░;████████░░;███████░░░;██████░░░░;█████░░░░░;██████░░░░;███████░░░;████████░░;█████████░"
+             dur="10s" repeatCount="indefinite"/>
+    
+    <!-- Status indicators -->
+    <g opacity="0.7">
+      <circle cx="750" cy="25" r="4" fill="#39D353">
+        <animate attributeName="opacity" values="0.7;1;0.7" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <text x="760" y="30" font-size="10">ONLINE</text>
+    </g>
+    
+    <!-- Mission status -->
+    <text x="20" y="340" font-size="10" opacity="0.6">
+      MISSION: DEPLOY ENERGY WEAPONS • TARGET: GITHUB GRID
+    </text>
+    
+    <!-- Weapon system status -->
+    <text x="300" y="340" font-size="9" opacity="0.5">
+      ENERGY CANNON: ACTIVE • TRACKING: ENABLED
+    </text>
+  </g>
+
+  <!-- ====== Additional Visual Enhancements ====== -->
+  <!-- Subtle grid glow effect -->
+  <g id="grid-glow" opacity="0.1">
+    <use xlink:href="#grid" filter="url(#glow)"/>
+  </g>
+  
+  <!-- Ambient lighting effect -->
+  <defs>
+    <radialGradient id="ambient-light" cx="50%" cy="0%" r="100%">
+      <stop offset="0%" style="stop-color:#39D353;stop-opacity:0.05" />
+      <stop offset="100%" style="stop-color:#39D353;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  <ellipse cx="410" cy="0" rx="400" ry="200" fill="url(#ambient-light)"/>
 </svg>
-
