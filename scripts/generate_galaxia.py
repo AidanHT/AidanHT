@@ -88,14 +88,21 @@ def generate_dummy():
     """Sample data for local dev."""
     rng = random.Random(42)
     weeks_days, total = [], 0
-    cursor, week = start_date, []
+    # Align to Sunday (GitHub weeks start Sunday)
+    # Python: Monday=0, Sunday=6
+    days_back = (start_date.weekday() + 1) % 7  # days since last Sunday
+    cursor = start_date - dt.timedelta(days=days_back)
+    week = []
     while cursor <= today:
+        in_range = start_date <= cursor <= today
         dow = cursor.weekday()
-        count = rng.choices([0,1,2,3,5,8,13], weights=[3,4,3,2,1,1,0.5], k=1)[0] if dow < 5 \
-            else rng.choices([0,1,2], weights=[5,3,1], k=1)[0]
+        count = 0
+        if in_range:
+            count = rng.choices([0,1,2,3,5,8,13], weights=[3,4,3,2,1,1,0.5], k=1)[0] if dow < 5 \
+                else rng.choices([0,1,2], weights=[5,3,1], k=1)[0]
         total += count
         week.append((cursor.isoformat(), count))
-        if dow == 5:
+        if dow == 5:  # Saturday — end of GitHub week
             weeks_days.append(week); week = []
         cursor += dt.timedelta(days=1)
     if week:
@@ -240,6 +247,7 @@ for i, tgt in enumerate(targets):
     _, _, _, tx, ty = tgt
     ft = fire_times[i]
     sx, sy = ship_pos(ft)
+    sy -= 22  # Launch from nose (ship faces up)
     # Target center
     tcx, tcy = tx + CELL/2, ty + CELL/2
     balls.append(
@@ -273,7 +281,7 @@ score_str = f"{total:06d}"
 hi_score = f"{max(total * 2, 5000):06d}"
 
 # -- Day labels --
-day_labels = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]
+day_labels = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
 
 # ---------------------------------------------------------------------------
 # Assemble SVG
@@ -305,11 +313,8 @@ svg = f"""<svg xmlns="http://www.w3.org/2000/svg"
     <linearGradient id="rk-body" x1="0%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="#E8F4FD"/><stop offset="50%" stop-color="#B8DCF2"/><stop offset="100%" stop-color="#4A90C2"/>
     </linearGradient>
-    <linearGradient id="rk-nose" x1="0%" y1="0%" x2="100%" y2="0%">
+    <linearGradient id="rk-nose" x1="0%" y1="100%" x2="0%" y2="0%">
       <stop offset="0%" stop-color="#FF6B35"/><stop offset="100%" stop-color="#FFB366"/>
-    </linearGradient>
-    <linearGradient id="rk-wing" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#2EA043"/><stop offset="100%" stop-color="#9BE9A8"/>
     </linearGradient>
     <radialGradient id="space" cx="50%" cy="50%" r="50%">
       <stop offset="0%" stop-color="#0A0E1A"/><stop offset="100%" stop-color="#020305"/>
@@ -372,53 +377,52 @@ svg = f"""<svg xmlns="http://www.w3.org/2000/svg"
   <!-- Projectiles -->
   <g filter="url(#bglow)">{''.join(balls)}</g>
 
-  <!-- Spaceship -->
+  <!-- Spaceship (facing UP — classic arcade orientation) -->
   <g filter="url(#glow)">
     <animateTransform attributeName="transform" type="translate"
       values="{wp}" dur="{CYCLE}s" repeatCount="indefinite"
       calcMode="spline" keySplines="{spline}"/>
     <!-- Body -->
-    <rect x="-18" y="-10" width="36" height="20" rx="3" fill="url(#rk-body)" stroke="#4A90C2" stroke-width="0.8"/>
-    <!-- Nose -->
-    <polygon points="18,-10 28,0 18,10" fill="url(#rk-nose)"/>
-    <!-- Wings -->
-    <polygon points="-10,-10 -18,-18 5,-10" fill="url(#rk-wing)"/>
-    <polygon points="-10,10 -18,18 5,10" fill="url(#rk-wing)"/>
+    <rect x="-10" y="-14" width="20" height="28" rx="3" fill="url(#rk-body)" stroke="#4A90C2" stroke-width="0.8"/>
+    <!-- Nose (pointing up) -->
+    <polygon points="-10,-14 0,-24 10,-14" fill="url(#rk-nose)"/>
+    <!-- Wings (extending left and right) -->
+    <polygon points="-10,-4 -20,-12 -10,-10" fill="#39D353" opacity="0.9"/>
+    <polygon points="10,-4 20,-12 10,-10" fill="#39D353" opacity="0.9"/>
     <!-- Cockpit -->
-    <ellipse cx="10" cy="0" rx="5" ry="4" fill="#87CEEB" opacity="0.8"/>
-    <ellipse cx="12" cy="-1.5" rx="2" ry="1.5" fill="#FFF" opacity="0.5"/>
+    <ellipse cx="0" cy="-6" rx="4" ry="5" fill="#87CEEB" opacity="0.8"/>
+    <ellipse cx="-1" cy="-8" rx="1.5" ry="2" fill="#FFF" opacity="0.5"/>
     <!-- Stripe details -->
-    <rect x="-12" y="-6" width="2" height="12" fill="#FF8C42" opacity="0.6"/>
-    <rect x="-6" y="-7" width="1.5" height="14" fill="#39D353" opacity="0.5"/>
-    <!-- Thrusters -->
-    <ellipse cx="-22" cy="-5" rx="5" ry="2.5" fill="#FF4500" opacity="0.8">
-      <animate attributeName="rx" values="5;8;5" dur="0.15s" repeatCount="indefinite"/>
+    <rect x="-7" y="2" width="14" height="1.5" fill="#FF8C42" opacity="0.6"/>
+    <rect x="-6" y="7" width="12" height="1.5" fill="#39D353" opacity="0.5"/>
+    <!-- Thrusters (bottom, pointing down) -->
+    <ellipse cx="-4" cy="17" rx="2.5" ry="4" fill="#FF4500" opacity="0.8">
+      <animate attributeName="ry" values="4;7;4" dur="0.15s" repeatCount="indefinite"/>
     </ellipse>
-    <ellipse cx="-26" cy="-5" rx="7" ry="3.5" fill="#FFB347" opacity="0.4">
-      <animate attributeName="rx" values="7;10;7" dur="0.12s" repeatCount="indefinite"/>
+    <ellipse cx="-4" cy="20" rx="3" ry="6" fill="#FFB347" opacity="0.4">
+      <animate attributeName="ry" values="6;9;6" dur="0.12s" repeatCount="indefinite"/>
     </ellipse>
-    <ellipse cx="-22" cy="5" rx="5" ry="2.5" fill="#FF4500" opacity="0.8">
-      <animate attributeName="rx" values="5;8;5" dur="0.15s" repeatCount="indefinite"/>
+    <ellipse cx="4" cy="17" rx="2.5" ry="4" fill="#FF4500" opacity="0.8">
+      <animate attributeName="ry" values="4;7;4" dur="0.15s" repeatCount="indefinite"/>
     </ellipse>
-    <ellipse cx="-26" cy="5" rx="7" ry="3.5" fill="#FFB347" opacity="0.4">
-      <animate attributeName="rx" values="7;10;7" dur="0.12s" repeatCount="indefinite"/>
+    <ellipse cx="4" cy="20" rx="3" ry="6" fill="#FFB347" opacity="0.4">
+      <animate attributeName="ry" values="6;9;6" dur="0.12s" repeatCount="indefinite"/>
     </ellipse>
     <!-- Nav lights -->
-    <circle cx="25" cy="0" r="1.5" fill="#00FF00">
+    <circle cx="0" cy="-22" r="1.5" fill="#00FF00">
       <animate attributeName="opacity" values="0.8;0.3;0.8" dur="1s" repeatCount="indefinite"/>
     </circle>
-    <circle cx="-16" cy="-16" r="1" fill="#FF0000">
+    <circle cx="-18" cy="-10" r="1" fill="#FF0000">
       <animate attributeName="opacity" values="0.8;0.3;0.8" dur="1.2s" repeatCount="indefinite"/>
     </circle>
-    <circle cx="-16" cy="16" r="1" fill="#FF0000">
+    <circle cx="18" cy="-10" r="1" fill="#FF0000">
       <animate attributeName="opacity" values="0.8;0.3;0.8" dur="1.4s" repeatCount="indefinite"/>
     </circle>
   </g>
 
   <!-- HUD bottom -->
   <g class="hud" opacity="0.5">
-    <text x="20" y="{height-8}" font-size="9">MISSION: DEPLOY ENERGY WEAPONS \u00b7 TARGET: GITHUB GRID</text>
-    <text x="{width/2:.0f}" y="{height-8}" font-size="9">ENERGY CANNON: ACTIVE \u00b7 TRACKING: ENABLED</text>
+    <text x="{width - 20}" y="{height-8}" font-size="9" text-anchor="end">WEAPONS: ONLINE \u00b7 TRACKING: ACTIVE</text>
   </g>
 
   <!-- Legend -->
