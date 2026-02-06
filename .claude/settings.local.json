@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python scripts/generate_galaxia.py:*)",
+      "Bash(gh auth status:*)"
+    ]
+  }
+}
