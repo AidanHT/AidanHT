@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 156 44" width="156" height="44" role="img" aria-label="aidanht.me">
+  <rect x="0.5" y="0.5" width="155" height="43" rx="10" fill="#0c1219" stroke="#1b2632"/>
+  <rect x="0.5" y="0.5" width="3" height="43" rx="1.5" fill="#64ffda"/>
+  <g transform="translate(16,22.0)"><circle r="9" fill="none" stroke="#64ffda" stroke-width="1.4"/>
+      <ellipse rx="4" ry="9" fill="none" stroke="#64ffda" stroke-width="1.2"/>
+      <line x1="-9" y1="0" x2="9" y2="0" stroke="#64ffda" stroke-width="1.2"/></g>
+  <line x1="38" y1="9" x2="38" y2="35" stroke="#1b2632"/>
+  <text x="46" y="26.5" font-family="ui-monospace,'SF Mono','JetBrains Mono',monospace" font-size="13" fill="#dfe7ef">aidanht.me</text>
+  <circle cx="143" cy="22.0" r="2" fill="#64ffda">
+    <animate attributeName="opacity" values="1;0.25;1" dur="2.6s" repeatCount="indefinite"/>
+  </circle>
+</svg>

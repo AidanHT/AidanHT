@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164 44" width="164" height="44" role="img" aria-label="@AidanHTran">
+  <rect x="0.5" y="0.5" width="163" height="43" rx="10" fill="#0c1219" stroke="#1b2632"/>
+  <rect x="0.5" y="0.5" width="3" height="43" rx="1.5" fill="#dfe7ef"/>
+  <g transform="translate(16,22.0)"><line x1="-7" y1="-7" x2="7" y2="7" stroke="#dfe7ef" stroke-width="1.8" stroke-linecap="round"/>
+      <line x1="7" y1="-7" x2="-7" y2="7" stroke="#dfe7ef" stroke-width="1.8" stroke-linecap="round"/></g>
+  <line x1="38" y1="9" x2="38" y2="35" stroke="#1b2632"/>
+  <text x="46" y="26.5" font-family="ui-monospace,'SF Mono','JetBrains Mono',monospace" font-size="13" fill="#dfe7ef">@AidanHTran</text>
+  <circle cx="151" cy="22.0" r="2" fill="#dfe7ef">
+    <animate attributeName="opacity" values="1;0.25;1" dur="2.6s" repeatCount="indefinite"/>
+  </circle>
+</svg>
