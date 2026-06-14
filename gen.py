@@ -259,7 +259,7 @@ def build_banner():
       </path>
     </g>
     <g font-family="ui-monospace,'SF Mono','JetBrains Mono',monospace" font-size="15">
-      <text x="235" y="150" fill="{MUTE}">$ whoami<tspan fill="{ACCENT}"> → </tspan><tspan fill="{CHALK}">geometry · systems · interfaces</tspan></text>
+      <text x="235" y="150" fill="{MUTE}">$ whoami<tspan fill="{ACCENT}"> → </tspan><tspan fill="{CHALK}">AI/ML · systems · full stack</tspan></text>
       <rect x="600" y="139" width="9" height="15" fill="{ACCENT}">
         <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.5;0.5;1" dur="1.1s" repeatCount="indefinite"/>
       </rect>
@@ -328,7 +328,6 @@ def build_badges():
 
 # ----------------------------------------------------------------------------
 build_polyhedron()
-build_gyro()
 build_banner()
 build_divider()
 build_badges()
