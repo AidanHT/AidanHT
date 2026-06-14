@@ -327,7 +327,6 @@ def build_badges():
     badge("badge_x.svg", "@AidanHTran", x_icon, CHALK)
 
 # ----------------------------------------------------------------------------
-build_polyhedron()
 build_banner()
 build_divider()
 build_badges()
